@@ -3,7 +3,7 @@ import { Howl } from "howler";
 import { FC, useEffect, useState } from "react";
 
 const soundSprite = new Howl({
-    src: [process.env.PUBLIC_URL + "/drums.mp3"],
+    src: [process.env.PUBLIC_URL + "/sounds/drums.mp3"],
     sprite: {
         cowbell: [0, 300],
         conga_hi: [400, 300],
