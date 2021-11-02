@@ -15,6 +15,13 @@
             "name": "Run production",
             "request": "launch",
             "type": "node-terminal"
+        },
+        {
+            "name": "Debug Chrome",
+            "request": "launch",
+            "type": "pwa-chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
