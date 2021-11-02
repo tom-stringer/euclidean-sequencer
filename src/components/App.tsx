@@ -27,13 +27,20 @@ const soundSprite = new Howl({
 const App: FC = () => {
     const [pulsesInput, setPulsesInput] = useState("3");
     const [stepsInput, setStepsInput] = useState("8");
+    const [rotationInput, setRotationInput] = useState("0");
     const [isPlaying, setPlaying] = useState(false);
     const [currentStep, setCurrentStep] = useState(0);
 
     const pulses = isNaN(Number(pulsesInput)) ? 0 : Number(pulsesInput);
     const steps = isNaN(Number(stepsInput)) ? 0 : Number(stepsInput);
+    const rotation = isNaN(Number(rotationInput)) ? 0 : Number(rotationInput);
 
-    const rhythm = getPattern(pulses, steps);
+    function rotateNecklace(rhythm: number[], rotation: number): number[] {
+        rotation = rotation % rhythm.length;
+        return rhythm.slice(rhythm.length - rotation).concat(rhythm.slice(0, rhythm.length - rotation));
+    }
+
+    const rhythm = rotateNecklace(getPattern(pulses, steps), rotation);
 
     useEffect(() => {
         if (isPlaying) {
@@ -43,7 +50,7 @@ const App: FC = () => {
             }
             setTimeout(() => {
                 setCurrentStep((currentStep + 1) % steps);
-            }, 1000);
+            }, 100);
         } else {
             setCurrentStep(0);
         }
@@ -66,6 +73,14 @@ const App: FC = () => {
 
             <label htmlFor="steps">Steps:</label>
             <input type="text" id="steps" value={stepsInput} onChange={(event) => setStepsInput(event.target.value)} />
+
+            <label htmlFor="rotation">Rotation:</label>
+            <input
+                type="text"
+                id="rotation"
+                value={rotationInput}
+                onChange={(event) => setRotationInput(event.target.value)}
+            />
 
             <button onClick={() => setPlaying(!isPlaying)}>{isPlaying ? "Stop" : "Play"}</button>
 
