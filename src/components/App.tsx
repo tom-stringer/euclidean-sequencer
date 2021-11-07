@@ -3,7 +3,7 @@ import { FC } from "react";
 import { useRecoilState } from "recoil";
 import { isPlayingState } from "../recoil/rhythm-state";
 import TrackProvider from "./providers/TrackProvider";
-import RecoilDebugger from "./RecoilDebugger";
+import RecoilDebugger from "./utils/RecoilDebugger";
 
 export const soundSprite = new Howl({
     src: [process.env.PUBLIC_URL + "/sounds/drums.mp3"],

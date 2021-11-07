@@ -6,7 +6,7 @@ const RecoilDebugger: FC = () => {
     useEffect(() => {
         console.debug("The following atoms were modified:");
         for (const node of snapshot.getNodes_UNSTABLE({ isModified: true }) as RecoilValue<unknown>[]) {
-            console.debug(node.key, snapshot.getLoadable(node));
+            console.debug(node.key, snapshot.getLoadable(node).contents);
         }
     }, [snapshot]);
     return null;
