@@ -1,4 +1,4 @@
-import { atom, selector } from "recoil";
+import { atom, DefaultValue, selector } from "recoil";
 
 interface Track {
     necklace: number[];
@@ -17,12 +17,16 @@ export const rhythmState = atom<Rhythm>({
     default: { tracks: [{ necklace: [], steps: 8, pulses: 3, rotation: 0, currentStep: 0 }] },
 });
 
-export const selectTrack = selector({
+export const trackState = selector<Track>({
     key: "track",
     get: ({ get }) => get(rhythmState).tracks[0],
+    set: ({ get, set }, value) => {
+        const rhythm = get(rhythmState);
+        set(rhythmState, value instanceof DefaultValue ? value : { ...rhythm, tracks: [value] });
+    },
 });
 
-export const isPlayingState = atom({
+export const isPlayingState = atom<boolean>({
     key: "isPlaying",
     default: false,
 });

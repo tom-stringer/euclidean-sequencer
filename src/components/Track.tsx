@@ -1,13 +1,13 @@
 import { getPattern } from "euclidean-rhythms";
 import { FC, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { isPlayingState, rhythmState } from "../recoil/rhythm-state";
+import { isPlayingState, rhythmState, trackState } from "../recoil/rhythm-state";
 import { rotateNecklace } from "../utils/rhythm-utils";
 import { soundSprite } from "./App";
 
-const Rhythm: FC = () => {
+const Track: FC = () => {
+    const [track, setTrack] = useRecoilState(trackState);
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
-    const [rhythm, setRhythm] = useRecoilState(rhythmState);
     const [pulsesInput, setPulsesInput] = useState("3");
     const [stepsInput, setStepsInput] = useState("8");
     const [rotationInput, setRotationInput] = useState("0");
@@ -15,9 +15,9 @@ const Rhythm: FC = () => {
     function setPulses(pulses: string) {
         setPulsesInput(pulses);
         if (!isNaN(Number(pulses))) {
-            setRhythm((value) => ({
+            setTrack((value) => ({
                 ...value,
-                tracks: [{ ...value.tracks[0], pulses: Number(pulses) }],
+                pulses: Number(pulses),
             }));
         }
     }
@@ -25,9 +25,9 @@ const Rhythm: FC = () => {
     function setSteps(steps: string) {
         setStepsInput(steps);
         if (!isNaN(Number(steps))) {
-            setRhythm((value) => ({
+            setTrack((value) => ({
                 ...value,
-                tracks: [{ ...value.tracks[0], steps: Number(steps) }],
+                steps: Number(steps),
             }));
         }
     }
@@ -35,67 +35,59 @@ const Rhythm: FC = () => {
     function setRotation(rotation: string) {
         setRotationInput(rotation);
         if (!isNaN(Number(rotation))) {
-            setRhythm((value) => ({
+            setTrack((value) => ({
                 ...value,
-                tracks: [{ ...value.tracks[0], rotation: Number(rotation) }],
+                rotation: Number(rotation),
             }));
         }
     }
 
     useEffect(() => {
-        setRhythm((value) => {
-            const necklace = rotateNecklace(
-                getPattern(rhythm.tracks[0].pulses, rhythm.tracks[0].steps),
-                rhythm.tracks[0].rotation
-            );
+        setTrack((value) => {
+            const necklace = rotateNecklace(getPattern(value.pulses, value.steps), value.rotation);
             return {
                 ...value,
-                tracks: [{ ...value.tracks[0], necklace }],
+                necklace,
             };
         });
     }, []);
 
     useEffect(() => {
-        setRhythm((value) => {
-            const necklace = rotateNecklace(
-                getPattern(rhythm.tracks[0].pulses, rhythm.tracks[0].steps),
-                rhythm.tracks[0].rotation
-            );
+        setTrack((value) => {
+            const necklace = rotateNecklace(getPattern(value.pulses, value.steps), value.rotation);
             return {
                 ...value,
-                tracks: [{ ...value.tracks[0], necklace }],
+                necklace,
             };
         });
-    }, [rhythm.tracks[0].pulses, rhythm.tracks[0].steps, rhythm.tracks[0].rotation]);
+    }, [track.pulses, track.steps, track.rotation]);
 
     useEffect(() => {
         if (isPlaying) {
-            if (rhythm.tracks[0].necklace[rhythm.tracks[0].currentStep]) {
+            if (track.necklace[track.currentStep]) {
                 soundSprite.play("kick");
             }
             setTimeout(() => {
-                setRhythm((value) => ({
+                setTrack((value) => ({
                     ...value,
-                    tracks: [
-                        { ...value.tracks[0], currentStep: (value.tracks[0].currentStep + 1) % rhythm.tracks[0].steps },
-                    ],
+                    currentStep: (value.currentStep + 1) % value.steps,
                 }));
             }, 100);
         } else {
-            setRhythm((value) => ({
+            setTrack((value) => ({
                 ...value,
-                tracks: [{ ...value.tracks[0], currentStep: 0 }],
+                currentStep: 0,
             }));
         }
-    }, [isPlaying, rhythm.tracks[0].currentStep]);
+    }, [isPlaying, track.currentStep]);
 
     useEffect(() => {
         setPlaying(false);
-        setRhythm((value) => ({
+        setTrack((value) => ({
             ...value,
-            tracks: [{ ...value.tracks[0], currentStep: 0 }],
+            currentStep: 0,
         }));
-    }, [rhythm.tracks[0].steps]);
+    }, [track.steps]);
 
     return (
         <div>
@@ -116,12 +108,12 @@ const Rhythm: FC = () => {
             <button onClick={() => setPlaying(!isPlaying)}>{isPlaying ? "Stop" : "Play"}</button>
 
             <p>
-                {rhythm.tracks[0].necklace.map((step, i) =>
-                    i === rhythm.tracks[0].currentStep ? <span style={{ color: "red" }}>{step}</span> : step
+                {track.necklace.map((step, i) =>
+                    i === track.currentStep ? <span style={{ color: "red" }}>{step}</span> : step
                 )}
             </p>
         </div>
     );
 };
 
-export default Rhythm;
+export default Track;

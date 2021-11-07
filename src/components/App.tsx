@@ -1,6 +1,6 @@
 import { Howl } from "howler";
 import { FC } from "react";
-import Rhythm from "./Rhythm";
+import Track from "./Track";
 
 export const soundSprite = new Howl({
     src: [process.env.PUBLIC_URL + "/sounds/drums.mp3"],
@@ -25,7 +25,7 @@ export const soundSprite = new Howl({
 });
 
 const App: FC = () => {
-    return <Rhythm />;
+    return <Track />;
 };
 
 export default App;
