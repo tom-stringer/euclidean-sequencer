@@ -1,6 +1,9 @@
 import { Howl } from "howler";
 import { FC } from "react";
-import Track from "./Track";
+import { useRecoilState } from "recoil";
+import { isPlayingState } from "../recoil/rhythm-state";
+import TrackProvider from "./providers/TrackProvider";
+import RecoilDebugger from "./RecoilDebugger";
 
 export const soundSprite = new Howl({
     src: [process.env.PUBLIC_URL + "/sounds/drums.mp3"],
@@ -25,7 +28,16 @@ export const soundSprite = new Howl({
 });
 
 const App: FC = () => {
-    return <Track />;
+    const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
+
+    return (
+        <div>
+            <button onClick={() => setPlaying(!isPlaying)}>{isPlaying ? "Stop" : "Play"}</button>
+            <TrackProvider />
+            <TrackProvider />
+            <RecoilDebugger />
+        </div>
+    );
 };
 
 export default App;

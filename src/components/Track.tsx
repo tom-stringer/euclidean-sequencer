@@ -5,8 +5,12 @@ import { isPlayingState, rhythmState, trackState } from "../recoil/rhythm-state"
 import { rotateNecklace } from "../utils/rhythm-utils";
 import { soundSprite } from "./App";
 
-const Track: FC = () => {
-    const [track, setTrack] = useRecoilState(trackState);
+interface TrackProps {
+    id: string;
+}
+
+const Track: FC<TrackProps> = ({ id }) => {
+    const [track, setTrack] = useRecoilState(trackState(id));
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
     const [pulsesInput, setPulsesInput] = useState("3");
     const [stepsInput, setStepsInput] = useState("8");
@@ -42,11 +46,15 @@ const Track: FC = () => {
         }
     }
 
+    // ! Change where the track is initialised.
     useEffect(() => {
         setTrack((value) => {
-            const necklace = rotateNecklace(getPattern(value.pulses, value.steps), value.rotation);
+            const necklace = rotateNecklace(getPattern(3, 8), 0);
             return {
                 ...value,
+                steps: 8,
+                pulses: 3,
+                rotation: 0,
                 necklace,
             };
         });
@@ -104,8 +112,6 @@ const Track: FC = () => {
                 value={rotationInput}
                 onChange={(event) => setRotation(event.target.value)}
             />
-
-            <button onClick={() => setPlaying(!isPlaying)}>{isPlaying ? "Stop" : "Play"}</button>
 
             <p>
                 {track.necklace.map((step, i) =>

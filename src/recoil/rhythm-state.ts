@@ -1,6 +1,7 @@
-import { atom, DefaultValue, selector } from "recoil";
+import { atom, DefaultValue, selector, selectorFamily } from "recoil";
 
-interface Track {
+export interface Track {
+    id: string;
     necklace: number[];
     steps: number;
     pulses: number;
@@ -9,21 +10,32 @@ interface Track {
 }
 
 interface Rhythm {
-    tracks: Track[];
+    tracks: Record<string, Track>;
 }
 
 export const rhythmState = atom<Rhythm>({
     key: "rhythm",
-    default: { tracks: [{ necklace: [], steps: 8, pulses: 3, rotation: 0, currentStep: 0 }] },
+    default: {
+        tracks: {},
+    },
 });
 
-export const trackState = selector<Track>({
+export const trackState = selectorFamily<Track, string>({
     key: "track",
-    get: ({ get }) => get(rhythmState).tracks[0],
-    set: ({ get, set }, value) => {
-        const rhythm = get(rhythmState);
-        set(rhythmState, value instanceof DefaultValue ? value : { ...rhythm, tracks: [value] });
-    },
+    get:
+        (id) =>
+        ({ get }) =>
+            get(rhythmState).tracks[id],
+    set:
+        (id) =>
+        ({ get, set }, value) => {
+            if (value instanceof DefaultValue) {
+                set(rhythmState, value);
+                return;
+            }
+            const rhythm = get(rhythmState);
+            set(rhythmState, { ...rhythm, tracks: { ...rhythm.tracks, [id]: value } });
+        },
 });
 
 export const isPlayingState = atom<boolean>({
