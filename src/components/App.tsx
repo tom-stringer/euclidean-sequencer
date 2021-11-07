@@ -1,8 +1,8 @@
-import { getPattern } from "euclidean-rhythms";
 import { Howl } from "howler";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
+import Rhythm from "./Rhythm";
 
-const soundSprite = new Howl({
+export const soundSprite = new Howl({
     src: [process.env.PUBLIC_URL + "/sounds/drums.mp3"],
     sprite: {
         cowbell: [0, 300],
@@ -25,68 +25,7 @@ const soundSprite = new Howl({
 });
 
 const App: FC = () => {
-    const [pulsesInput, setPulsesInput] = useState("3");
-    const [stepsInput, setStepsInput] = useState("8");
-    const [rotationInput, setRotationInput] = useState("0");
-    const [isPlaying, setPlaying] = useState(false);
-    const [currentStep, setCurrentStep] = useState(0);
-
-    const pulses = isNaN(Number(pulsesInput)) ? 0 : Number(pulsesInput);
-    const steps = isNaN(Number(stepsInput)) ? 0 : Number(stepsInput);
-    const rotation = isNaN(Number(rotationInput)) ? 0 : Number(rotationInput);
-
-    function rotateNecklace(rhythm: number[], rotation: number): number[] {
-        rotation = rotation % rhythm.length;
-        return rhythm.slice(rhythm.length - rotation).concat(rhythm.slice(0, rhythm.length - rotation));
-    }
-
-    const rhythm = rotateNecklace(getPattern(pulses, steps), rotation);
-
-    useEffect(() => {
-        if (isPlaying) {
-            console.log(`Step ${currentStep}: ${rhythm[currentStep]}`);
-            if (rhythm[currentStep]) {
-                soundSprite.play("kick");
-            }
-            setTimeout(() => {
-                setCurrentStep((currentStep + 1) % steps);
-            }, 100);
-        } else {
-            setCurrentStep(0);
-        }
-    }, [isPlaying, currentStep]);
-
-    useEffect(() => {
-        setPlaying(false);
-        setCurrentStep(0);
-    }, [steps]);
-
-    return (
-        <div>
-            <label htmlFor="pulses">Pulses:</label>
-            <input
-                type="text"
-                id="pulses"
-                value={pulsesInput}
-                onChange={(event) => setPulsesInput(event.target.value)}
-            />
-
-            <label htmlFor="steps">Steps:</label>
-            <input type="text" id="steps" value={stepsInput} onChange={(event) => setStepsInput(event.target.value)} />
-
-            <label htmlFor="rotation">Rotation:</label>
-            <input
-                type="text"
-                id="rotation"
-                value={rotationInput}
-                onChange={(event) => setRotationInput(event.target.value)}
-            />
-
-            <button onClick={() => setPlaying(!isPlaying)}>{isPlaying ? "Stop" : "Play"}</button>
-
-            <p>{rhythm.map((step, i) => (i === currentStep ? <span style={{ color: "red" }}>{step}</span> : step))}</p>
-        </div>
-    );
+    return <Rhythm />;
 };
 
 export default App;
