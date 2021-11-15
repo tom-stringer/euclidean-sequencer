@@ -1,8 +1,8 @@
 import { getPattern } from "euclidean-rhythms";
 import { FC, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { useStepDelay } from "../hooks/rhythm-hooks";
-import { isPlayingState, trackState } from "../recoil/rhythm-state";
+import { isPlayingState, tracksState, trackState } from "../recoil/rhythm-state";
 import { rotateNecklace } from "../utils/rhythm-utils";
 import { soundSprite } from "./App";
 
@@ -12,6 +12,7 @@ interface TrackProps {
 
 const Track: FC<TrackProps> = ({ id }) => {
     const [track, setTrack] = useRecoilState(trackState(id));
+    const setTracks = useSetRecoilState(tracksState);
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
     const stepDelay = useStepDelay();
     const [pulsesInput, setPulsesInput] = useState("3");
@@ -46,6 +47,16 @@ const Track: FC<TrackProps> = ({ id }) => {
                 rotation: Number(rotation),
             }));
         }
+    }
+
+    function removeTrack() {
+        setTracks((value) => {
+            const newTracks = {
+                ...value,
+            };
+            delete newTracks[id];
+            return newTracks;
+        });
     }
 
     useEffect(() => {
@@ -101,9 +112,17 @@ const Track: FC<TrackProps> = ({ id }) => {
                 onChange={(event) => setRotation(event.target.value)}
             />
 
+            <button onClick={() => removeTrack()}>&times;</button>
+
             <p>
                 {track.necklace.map((step, i) =>
-                    i === track.currentStep ? <span style={{ color: "red" }}>{step}</span> : step
+                    i === track.currentStep ? (
+                        <span key={i} style={{ color: "red" }}>
+                            {step}
+                        </span>
+                    ) : (
+                        step
+                    )
                 )}
             </p>
         </div>

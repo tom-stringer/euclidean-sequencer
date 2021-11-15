@@ -50,7 +50,7 @@ const App: FC = () => {
             />
             <button onClick={() => addTrack()}>Add Track</button>
             {Object.keys(tracks).map((id) => (
-                <Track id={id} />
+                <Track key={id} id={id} />
             ))}
             <RecoilDebugger />
         </div>
