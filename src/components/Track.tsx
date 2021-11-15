@@ -1,7 +1,8 @@
 import { getPattern } from "euclidean-rhythms";
 import { FC, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { isPlayingState, rhythmState, trackState } from "../recoil/rhythm-state";
+import { useStepDelay } from "../hooks/rhythm-hooks";
+import { isPlayingState, trackState } from "../recoil/rhythm-state";
 import { rotateNecklace } from "../utils/rhythm-utils";
 import { soundSprite } from "./App";
 
@@ -12,6 +13,7 @@ interface TrackProps {
 const Track: FC<TrackProps> = ({ id }) => {
     const [track, setTrack] = useRecoilState(trackState(id));
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
+    const stepDelay = useStepDelay();
     const [pulsesInput, setPulsesInput] = useState("3");
     const [stepsInput, setStepsInput] = useState("8");
     const [rotationInput, setRotationInput] = useState("0");
@@ -80,7 +82,7 @@ const Track: FC<TrackProps> = ({ id }) => {
                     ...value,
                     currentStep: (value.currentStep + 1) % value.steps,
                 }));
-            }, 100);
+            }, stepDelay);
         } else {
             setTrack((value) => ({
                 ...value,

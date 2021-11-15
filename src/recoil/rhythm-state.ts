@@ -1,4 +1,4 @@
-import { atom, DefaultValue, selector, selectorFamily } from "recoil";
+import { atom, DefaultValue, selectorFamily } from "recoil";
 
 export interface Track {
     id: string;
@@ -41,4 +41,9 @@ export const trackState = selectorFamily<Track, string>({
 export const isPlayingState = atom<boolean>({
     key: "isPlaying",
     default: false,
+});
+
+export const tempoState = atom<number>({
+    key: "tempo",
+    default: 60,
 });

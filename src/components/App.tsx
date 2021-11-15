@@ -1,7 +1,7 @@
 import { Howl } from "howler";
 import { FC } from "react";
 import { useRecoilState } from "recoil";
-import { isPlayingState } from "../recoil/rhythm-state";
+import { isPlayingState, tempoState } from "../recoil/rhythm-state";
 import TrackProvider from "./providers/TrackProvider";
 import RecoilDebugger from "./utils/RecoilDebugger";
 
@@ -29,10 +29,16 @@ export const soundSprite = new Howl({
 
 const App: FC = () => {
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
+    const [tempo, setTempo] = useRecoilState(tempoState);
 
     return (
         <div>
             <button onClick={() => setPlaying(!isPlaying)}>{isPlaying ? "Stop" : "Play"}</button>
+            <input
+                type="text"
+                value={String(tempo)}
+                onChange={(event) => !Number.isNaN(Number(event.target.value)) && setTempo(Number(event.target.value))}
+            />
             <TrackProvider />
             <TrackProvider />
             <RecoilDebugger />
