@@ -1,8 +1,10 @@
 import { Howl } from "howler";
 import { FC } from "react";
-import { useRecoilState } from "recoil";
-import { isPlayingState, tempoState } from "../recoil/rhythm-state";
-import TrackProvider from "./providers/TrackProvider";
+import { RecoilValueReadOnly, useRecoilState } from "recoil";
+import { v4 } from "uuid";
+import { createTrack } from "../factories/track-factory";
+import { isPlayingState, tempoState, tracksState } from "../recoil/rhythm-state";
+import Track from "./Track";
 import RecoilDebugger from "./utils/RecoilDebugger";
 
 export const soundSprite = new Howl({
@@ -30,6 +32,13 @@ export const soundSprite = new Howl({
 const App: FC = () => {
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
     const [tempo, setTempo] = useRecoilState(tempoState);
+    const [tracks, setTracks] = useRecoilState(tracksState);
+
+    // ! Move this functionality out of the top-level component.
+    function addTrack() {
+        const id = v4();
+        setTracks((value) => ({ ...value, [id]: createTrack(id, 8, 3) }));
+    }
 
     return (
         <div>
@@ -39,8 +48,10 @@ const App: FC = () => {
                 value={String(tempo)}
                 onChange={(event) => !Number.isNaN(Number(event.target.value)) && setTempo(Number(event.target.value))}
             />
-            <TrackProvider />
-            <TrackProvider />
+            <button onClick={() => addTrack()}>Add Track</button>
+            {Object.keys(tracks).map((id) => (
+                <Track id={id} />
+            ))}
             <RecoilDebugger />
         </div>
     );

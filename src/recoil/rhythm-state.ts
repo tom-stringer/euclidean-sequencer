@@ -1,4 +1,4 @@
-import { atom, DefaultValue, selectorFamily } from "recoil";
+import { atom, DefaultValue, selector, selectorFamily } from "recoil";
 
 export interface Track {
     id: string;
@@ -20,6 +20,19 @@ export const rhythmState = atom<Rhythm>({
     },
 });
 
+export const tracksState = selector<Record<string, Track>>({
+    key: "tracks",
+    get: ({ get }) => get(rhythmState).tracks,
+    set: ({ get, set }, value) => {
+        if (value instanceof DefaultValue) {
+            return;
+        }
+
+        const rhythm = get(rhythmState);
+        set(rhythmState, { ...rhythm, tracks: value });
+    },
+});
+
 export const trackState = selectorFamily<Track, string>({
     key: "track",
     get:
@@ -30,7 +43,6 @@ export const trackState = selectorFamily<Track, string>({
         (id) =>
         ({ get, set }, value) => {
             if (value instanceof DefaultValue) {
-                set(rhythmState, value);
                 return;
             }
             const rhythm = get(rhythmState);

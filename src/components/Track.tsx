@@ -48,20 +48,6 @@ const Track: FC<TrackProps> = ({ id }) => {
         }
     }
 
-    // ! Change where the track is initialised.
-    useEffect(() => {
-        setTrack((value) => {
-            const necklace = rotateNecklace(getPattern(3, 8), 0);
-            return {
-                ...value,
-                steps: 8,
-                pulses: 3,
-                rotation: 0,
-                necklace,
-            };
-        });
-    }, []);
-
     useEffect(() => {
         setTrack((value) => {
             const necklace = rotateNecklace(getPattern(value.pulses, value.steps), value.rotation);
