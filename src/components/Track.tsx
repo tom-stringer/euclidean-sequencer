@@ -3,8 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useStepDelay } from "../hooks/rhythm-hooks";
 import { isPlayingState, tracksState, trackState } from "../recoil/rhythm-state";
-import { rotateNecklace } from "../utils/rhythm-utils";
-import { soundSprite } from "./App";
+import { howls, rotateNecklace } from "../utils/rhythm-utils";
 
 interface TrackProps {
     id: string;
@@ -72,7 +71,7 @@ const Track: FC<TrackProps> = ({ id }) => {
     useEffect(() => {
         if (isPlaying) {
             if (track.necklace[track.currentStep]) {
-                soundSprite.play("kick");
+                track.instrument.howl.play();
             }
             setTimeout(() => {
                 setTrack((value) => ({

@@ -1,17 +1,5 @@
 import { atom, DefaultValue, selector, selectorFamily } from "recoil";
-
-export interface Track {
-    id: string;
-    necklace: number[];
-    steps: number;
-    pulses: number;
-    rotation: number;
-    currentStep: number;
-}
-
-interface Rhythm {
-    tracks: Record<string, Track>;
-}
+import { Rhythm, Track } from "../types/rhythm-types";
 
 export const rhythmState = atom<Rhythm>({
     key: "rhythm",
