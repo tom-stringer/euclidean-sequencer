@@ -55,6 +55,14 @@ const TrackEditor: FC<TrackProps> = ({ id }) => {
         setTrack((value) => ({ ...value, instrument: instrument as Instruments }));
     }
 
+    function setVolume(volume: string) {
+        howl.volume(Number(volume));
+        setTrack((value) => ({
+            ...value,
+            volume: Number(volume),
+        }));
+    }
+
     function removeTrack() {
         setTracks((value) => {
             const newTracks = {
@@ -130,6 +138,17 @@ const TrackEditor: FC<TrackProps> = ({ id }) => {
                     </option>
                 ))}
             </select>
+
+            <label htmlFor="volume">Volume:</label>
+            <input
+                type="range"
+                id="volume"
+                value={track.volume}
+                onChange={(event) => setVolume(event.target.value)}
+                min={0.0}
+                max={1.0}
+                step={0.01}
+            />
 
             <button onClick={() => removeTrack()}>&times;</button>
 

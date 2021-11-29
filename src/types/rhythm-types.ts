@@ -17,6 +17,7 @@ export interface Track {
     pulses: number;
     rotation: number;
     currentStep: number;
+    volume: number;
 }
 
 export interface Rhythm {
