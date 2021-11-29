@@ -7,7 +7,7 @@ export function rotateNecklace(rhythm: number[], rotation: number): number[] {
 }
 
 export function getStepDelay(tempo: number) {
-    return 60_000 / (tempo << 1);
+    return 60_000 / (tempo << 2);
 }
 
 export const cymbal = new Howl({
@@ -33,7 +33,7 @@ export const instruments: Record<Instruments, Instrument> = {
     },
     closedHat: {
         name: "Closed Hat",
-        src: getSrc("/sounds/CYCdh_ElecK01-ClHat01.wav"),
+        src: getSrc("/sounds/CYCdh_ElecK01-ClHat01-2.wav"),
     },
 };
 

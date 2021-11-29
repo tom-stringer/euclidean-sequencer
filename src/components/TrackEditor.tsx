@@ -11,7 +11,7 @@ interface TrackProps {
     id: string;
 }
 
-const Track: FC<TrackProps> = ({ id }) => {
+const TrackEditor: FC<TrackProps> = ({ id }) => {
     const [track, setTrack] = useRecoilState(trackState(id));
     const setTracks = useSetRecoilState(tracksState);
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
@@ -148,4 +148,4 @@ const Track: FC<TrackProps> = ({ id }) => {
     );
 };
 
-export default Track;
+export default TrackEditor;
