@@ -1,6 +1,5 @@
 import { getPattern } from "euclidean-rhythms";
-import { Howl } from "howler";
-import { Instrument, PlayableInstrument, Track } from "../types/rhythm-types";
+import { Instruments, Track } from "../types/rhythm-types";
 import { rotateNecklace } from "../utils/rhythm-utils";
 
 export function createTrack(id: string, instrument: string, steps: number, pulses: number): Track {
@@ -8,24 +7,10 @@ export function createTrack(id: string, instrument: string, steps: number, pulse
     return {
         id,
         necklace: rotateNecklace(getPattern(pulses, steps), rotation),
-        instrument: createPlayableInstrument(instrument),
+        instrument: Instruments.KICK,
         steps,
         pulses,
         rotation,
         currentStep: 0,
     };
 }
-
-function createPlayableInstrument(instrument: string): PlayableInstrument {
-    return {
-        name: instruments[instrument].name,
-        howl: new Howl({
-            src: instruments[instrument].src,
-        }),
-    };
-}
-
-const instruments: Record<string, Instrument> = {
-    kick: { name: "Kick", src: process.env.PUBLIC_URL + "/sounds/CYCdh_ElecK01-Kick01.wav" },
-    snare: { name: "Snare", src: "/sounds/CYCdh_ElecK01-Snr01.wav" },
-};

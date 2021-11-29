@@ -1,9 +1,11 @@
 import { getPattern } from "euclidean-rhythms";
+import { Howl } from "howler";
 import { FC, useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useStepDelay } from "../hooks/rhythm-hooks";
 import { isPlayingState, tracksState, trackState } from "../recoil/rhythm-state";
-import { howls, rotateNecklace } from "../utils/rhythm-utils";
+import { Instruments } from "../types/rhythm-types";
+import { instruments, rotateNecklace } from "../utils/rhythm-utils";
 
 interface TrackProps {
     id: string;
@@ -14,6 +16,7 @@ const Track: FC<TrackProps> = ({ id }) => {
     const setTracks = useSetRecoilState(tracksState);
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
     const stepDelay = useStepDelay();
+    const [howl, setHowl] = useState(new Howl({ src: instruments[track.instrument].src }));
     const [pulsesInput, setPulsesInput] = useState("3");
     const [stepsInput, setStepsInput] = useState("8");
     const [rotationInput, setRotationInput] = useState("0");
@@ -48,6 +51,10 @@ const Track: FC<TrackProps> = ({ id }) => {
         }
     }
 
+    function setInstrument(instrument: string) {
+        setTrack((value) => ({ ...value, instrument: instrument as Instruments }));
+    }
+
     function removeTrack() {
         setTracks((value) => {
             const newTracks = {
@@ -71,7 +78,7 @@ const Track: FC<TrackProps> = ({ id }) => {
     useEffect(() => {
         if (isPlaying) {
             if (track.necklace[track.currentStep]) {
-                track.instrument.howl.play();
+                howl.play();
             }
             setTimeout(() => {
                 setTrack((value) => ({
@@ -95,6 +102,10 @@ const Track: FC<TrackProps> = ({ id }) => {
         }));
     }, [track.steps]);
 
+    useEffect(() => {
+        setHowl(new Howl({ src: instruments[track.instrument].src }));
+    }, [track.instrument]);
+
     return (
         <div>
             <label htmlFor="pulses">Pulses:</label>
@@ -110,6 +121,15 @@ const Track: FC<TrackProps> = ({ id }) => {
                 value={rotationInput}
                 onChange={(event) => setRotation(event.target.value)}
             />
+
+            <label htmlFor="instrument">Instrument:</label>
+            <select value={track.instrument} onChange={(event) => setInstrument(event.target.value)}>
+                {Object.values(Instruments).map((instrument) => (
+                    <option key={instrument} value={instrument}>
+                        {instruments[instrument].name}
+                    </option>
+                ))}
+            </select>
 
             <button onClick={() => removeTrack()}>&times;</button>
 

@@ -1,4 +1,5 @@
 import { Howl } from "howler";
+import { Instrument, Instruments } from "../types/rhythm-types";
 
 export function rotateNecklace(rhythm: number[], rotation: number): number[] {
     rotation = rotation % rhythm.length;
@@ -13,22 +14,29 @@ export const cymbal = new Howl({
     src: process.env.PUBLIC_URL + "/sounds/CYCdh_ElecK01-Cymbal.wav",
 });
 
-export const closedHat = new Howl({
-    src: process.env.PUBLIC_URL + "/sounds/CYCdh_ElecK01-ClHat.wav",
-});
-
 export const openHat = new Howl({
     src: process.env.PUBLIC_URL + "/sounds/CYCdh_ElecK01-OpHat01.wav",
-});
-
-export const snare = new Howl({
-    src: process.env.PUBLIC_URL + "/sounds/CYCdh_ElecK01-Snr01.wav",
 });
 
 export const tom = new Howl({
     src: process.env.PUBLIC_URL + "/sounds/CYCdh_ElecK01-Tom01.wav",
 });
 
-export const howls: Record<string, Howl> = {
-    kick: new Howl({ src: process.env.PUBLIC_URL + "/sounds/CYCdh_ElecK01-Kick01.wav" }),
+export const instruments: Record<Instruments, Instrument> = {
+    kick: {
+        name: "Kick",
+        src: getSrc("/sounds/CYCdh_ElecK01-Kick01.wav"),
+    },
+    snare: {
+        name: "Snare",
+        src: getSrc("/sounds/CYCdh_ElecK01-Snr01.wav"),
+    },
+    closedHat: {
+        name: "Closed Hat",
+        src: getSrc("/sounds/CYCdh_ElecK01-ClHat01.wav"),
+    },
 };
+
+function getSrc(path: string) {
+    return process.env.PUBLIC_URL + path;
+}

@@ -1,10 +1,8 @@
-import { Howl } from "howler";
 import { FC } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { v4 } from "uuid";
 import { createTrack } from "../factories/track-factory";
 import { isPlayingState, tempoState, tracksState } from "../recoil/rhythm-state";
-import { howlAtom } from "../types/rhythm-types";
 import Track from "./Track";
 import RecoilDebugger from "./utils/RecoilDebugger";
 

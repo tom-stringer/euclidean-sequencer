@@ -1,20 +1,18 @@
-import { Howl } from "howler";
-import { atom } from "recoil";
+export enum Instruments {
+    KICK = "kick",
+    SNARE = "snare",
+    CLOSED_HAT = "closedHat",
+}
 
 export interface Instrument {
     name: string;
     src: string | string[];
 }
 
-export interface PlayableInstrument {
-    name: string;
-    howl: Howl;
-}
-
 export interface Track {
     id: string;
     necklace: number[];
-    instrument: PlayableInstrument;
+    instrument: Instruments;
     steps: number;
     pulses: number;
     rotation: number;
