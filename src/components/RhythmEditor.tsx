@@ -5,7 +5,6 @@ import { createTrack } from "../factories/track-factory";
 import { isPlayingState, tempoState, tracksState } from "../recoil/rhythm-state";
 import { Instruments } from "../types/rhythm-types";
 import TrackEditor from "./TrackEditor";
-import RecoilDebugger from "./utils/RecoilDebugger";
 
 const RhythmEditor: FC = () => {
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
@@ -29,7 +28,6 @@ const RhythmEditor: FC = () => {
             {Object.keys(tracks).map((id) => (
                 <TrackEditor key={id} id={id} />
             ))}
-            <RecoilDebugger />
         </div>
     );
 };
