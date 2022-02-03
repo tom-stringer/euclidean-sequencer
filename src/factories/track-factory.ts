@@ -11,7 +11,6 @@ export function createTrack(id: string, instrument: Instruments, steps: number, 
         steps,
         pulses,
         rotation,
-        currentStep: 0,
         volume: 1.0,
     };
 }

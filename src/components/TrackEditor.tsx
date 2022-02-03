@@ -2,8 +2,7 @@ import { getPattern } from "euclidean-rhythms";
 import { Howl } from "howler";
 import { FC, useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { useStepDelay } from "../hooks/rhythm-hooks";
-import { isPlayingState, tracksState, trackState } from "../recoil/rhythm-state";
+import { isPlayingState, rhythmState, tracksState, trackState } from "../recoil/rhythm-state";
 import { Instruments } from "../types/rhythm-types";
 import { instruments, rotateNecklace } from "../utils/rhythm-utils";
 
@@ -13,9 +12,9 @@ interface TrackProps {
 
 const TrackEditor: FC<TrackProps> = ({ id }) => {
     const [track, setTrack] = useRecoilState(trackState(id));
+    const [rhythm, setRhythm] = useRecoilState(rhythmState);
     const setTracks = useSetRecoilState(tracksState);
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
-    const stepDelay = useStepDelay();
     const [howl, setHowl] = useState(new Howl({ src: instruments[track.instrument].src }));
     const [pulsesInput, setPulsesInput] = useState("3");
     const [stepsInput, setStepsInput] = useState("8");
@@ -84,30 +83,14 @@ const TrackEditor: FC<TrackProps> = ({ id }) => {
     }, [track.pulses, track.steps, track.rotation]);
 
     useEffect(() => {
-        if (isPlaying) {
-            if (track.necklace[track.currentStep]) {
-                howl.play();
-            }
-            setTimeout(() => {
-                setTrack((value) => ({
-                    ...value,
-                    currentStep: (value.currentStep + 1) % value.steps,
-                }));
-            }, stepDelay);
-        } else {
-            setTrack((value) => ({
-                ...value,
-                currentStep: 0,
-            }));
+        if (isPlaying && track.necklace[rhythm.currentStep % track.steps]) {
+            howl.play();
         }
-    }, [isPlaying, track.currentStep]);
+    }, [isPlaying, rhythm.currentStep]);
 
     useEffect(() => {
         setPlaying(false);
-        setTrack((value) => ({
-            ...value,
-            currentStep: 0,
-        }));
+        setRhythm((value) => ({ ...value, currentStep: 0 }));
     }, [track.steps]);
 
     useEffect(() => {
@@ -154,7 +137,7 @@ const TrackEditor: FC<TrackProps> = ({ id }) => {
 
             <p>
                 {track.necklace.map((step, i) =>
-                    i === track.currentStep ? (
+                    i === rhythm.currentStep % track.steps ? (
                         <span key={i} style={{ color: "red" }}>
                             {step}
                         </span>

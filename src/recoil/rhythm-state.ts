@@ -4,6 +4,8 @@ import { Rhythm, Track } from "../types/rhythm-types";
 export const rhythmState = atom<Rhythm>({
     key: "rhythm",
     default: {
+        length: 0,
+        currentStep: 0,
         tracks: {},
     },
 });

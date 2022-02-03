@@ -16,10 +16,11 @@ export interface Track {
     steps: number;
     pulses: number;
     rotation: number;
-    currentStep: number;
     volume: number;
 }
 
 export interface Rhythm {
     tracks: Record<string, Track>;
+    length: number;
+    currentStep: number;
 }
