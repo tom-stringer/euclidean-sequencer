@@ -5,6 +5,7 @@ import MinusIcon from "./icons/MinusIcon";
 import PauseIcon from "./icons/PauseIcon";
 import PlayIcon from "./icons/PlayIcon";
 import PlusIcon from "./icons/PlusIcon";
+import Knob from "./input/Knob";
 
 const RhythmControls: FC = () => {
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
@@ -39,6 +40,7 @@ const RhythmControls: FC = () => {
             </button>
 
             <div className="flex justify-between items-center">
+                <Knob min={1} max={200} value={tempo} onChange={(value) => setTempo(value)} />
                 <button onClick={() => incrementTempo(-1)} className="flex justify-center">
                     <MinusIcon className="stroke-gray-400 w-5 h-5" />
                 </button>
