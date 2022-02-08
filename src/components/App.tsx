@@ -6,9 +6,11 @@ const App: FC = () => {
     const [isDebugging, setDebugging] = useState(false);
 
     return (
-        <div>
+        <div className="bg-gray-900 text-white">
             <RhythmEditor />
-            <label htmlFor="isDebugging">Debug Mode:</label>
+            <label htmlFor="isDebugging" className="">
+                Debug Mode:
+            </label>
             <input
                 type="checkbox"
                 id="isDebugging"

@@ -1,17 +1,17 @@
+import { isEqual } from "lodash";
 import { FC, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { v4 } from "uuid";
 import { createTrack } from "../factories/track-factory";
-import { isPlayingState, rhythmState, tempoState, tracksState } from "../recoil/rhythm-state";
-import { Instruments } from "../types/rhythm-types";
-import TrackEditor from "./TrackEditor";
-import { isEqual } from "lodash";
 import { useStepDelay } from "../hooks/rhythm-hooks";
+import { isPlayingState, rhythmState, tracksState } from "../recoil/rhythm-state";
+import { Instruments } from "../types/rhythm-types";
+import RhythmControls from "./RhythmControls";
+import TrackEditor from "./TrackEditor";
 
 const RhythmEditor: FC = () => {
     const [rhythm, setRhythm] = useRecoilState(rhythmState);
-    const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
-    const [tempo, setTempo] = useRecoilState(tempoState);
+    const [isPlaying] = useRecoilState(isPlayingState);
     const [tracks, setTracks] = useRecoilState(tracksState);
     const [trackStepsCache, setTrackStepCache] = useState(Object.values(tracks).map((track) => track.steps));
     const stepDelay = useStepDelay();
@@ -57,13 +57,8 @@ const RhythmEditor: FC = () => {
     }
 
     return (
-        <div>
-            <button onClick={() => setPlaying(!isPlaying)}>{isPlaying ? "Stop" : "Play"}</button>
-            <input
-                type="text"
-                value={String(tempo)}
-                onChange={(event) => !Number.isNaN(Number(event.target.value)) && setTempo(Number(event.target.value))}
-            />
+        <div className="flex flex-col items-center">
+            <RhythmControls />
             <button onClick={() => addTrack()}>Add Track</button>
             <p>
                 {rhythm.currentStep}/{rhythm.length}

@@ -28,12 +28,13 @@
         "uuid": "^8.3.2"
     },
     "scripts": {
-        "start": "npm run watch:css && react-scripts start",
-        "build": "npm run watch:css && react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject",
+        "watch:tailwind": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css -w",
+        "build:tailwind": "tailwindcss -i src/styles/tailwind.css -o src/styles/output.css",
+        "start": "concurrently -n react,tailwind -c blue,cyan \"react-scripts start\" \"npm:watch:tailwind\"",
+        "build": "npm run build:tailwind && react-scripts build",
         "serve": "npm run build && npx serve -s build",
-        "watch:css": "postcss src/styles/tailwind.css -o src/styles/output.css"
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
     },
     "eslintConfig": {
         "extends": [
