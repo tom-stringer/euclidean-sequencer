@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import Knob from "./Knob";
 import RhythmEditor from "./RhythmEditor";
 import RecoilDebugger from "./utils/RecoilDebugger";
 
@@ -18,6 +19,7 @@ const App: FC = () => {
                 onChange={(event) => setDebugging(event.target.checked)}
             />
             {isDebugging && <RecoilDebugger />}
+            <Knob />
         </div>
     );
 };
