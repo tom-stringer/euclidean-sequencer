@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ChangeEvent, FC, useEffect, useRef } from "react";
 import { useRecoilState } from "recoil";
 import { isPlayingState, tempoState } from "../recoil/rhythm-state";
 import MinusIcon from "./icons/MinusIcon";
@@ -9,13 +9,23 @@ import PlusIcon from "./icons/PlusIcon";
 const RhythmControls: FC = () => {
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
     const [tempo, setTempo] = useRecoilState(tempoState);
+    const knobRef = useRef<HTMLInputElement>(null);
 
     function handleClickPlay() {
         setPlaying((value) => !value);
     }
 
-    function changeTempo(amount: number) {
+    function incrementTempo(amount: number) {
         setTempo((value) => value + amount);
+    }
+
+    function handleTempoChange(event: ChangeEvent<HTMLInputElement>) {
+        const value = Number(event.target.value);
+        console.log("here");
+
+        if (!isNaN(value)) {
+            setTempo(value);
+        }
     }
 
     return (
@@ -29,15 +39,28 @@ const RhythmControls: FC = () => {
             </button>
 
             <div className="flex justify-between items-center">
-                <button onClick={() => changeTempo(-1)} className="flex justify-center">
+                <button onClick={() => incrementTempo(-1)} className="flex justify-center">
                     <MinusIcon className="stroke-gray-400 w-5 h-5" />
+                </button>
+                <input
+                    type="range"
+                    min={1}
+                    max={120}
+                    step={1}
+                    ref={knobRef}
+                    // value={tempo}
+                    onChange={(event) => handleTempoChange(event)}
+                    className="input-knob"
+                    data-fgcolor="#fff"
+                    data-bgcolor="#374151"
+                    data-diameter="40"
+                />
+                <button onClick={() => incrementTempo(1)} className="flex justify-center">
+                    <PlusIcon className="stroke-gray-400 w-5 h-5" />
                 </button>
                 <p className="text-lg">
                     {tempo} <span className="text-gray-400 text-sm">BPM</span>
                 </p>
-                <button onClick={() => changeTempo(1)} className="flex justify-center">
-                    <PlusIcon className="stroke-gray-400 w-5 h-5" />
-                </button>
             </div>
         </div>
     );
