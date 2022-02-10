@@ -17,7 +17,7 @@ interface Touch {
 
 const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange }) => {
     const knob = useRef<HTMLDivElement>(null);
-    const [touch, setTouch] = useState<Touch | null>(null);
+    const [_, setTouch] = useState<Touch | null>(null);
 
     useEffect(() => {
         knob.current?.addEventListener("touchstart", handleTouchStart, { passive: false });
@@ -27,13 +27,17 @@ const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange }) => {
         };
     }, []);
 
+    function calculateChange(movementX: number, movementY: number) {
+        return Math.round(0.5 * (movementX - movementY));
+    }
+
     function handleMouseDown() {
         document.addEventListener("mouseup", handleMouseUp);
         document.addEventListener("mousemove", handleMouseMove);
     }
 
     function handleMouseMove(event: MouseEvent) {
-        onChange(event.movementX - event.movementY);
+        onChange(calculateChange(event.movementX, event.movementY));
     }
 
     function handleMouseUp() {
@@ -71,7 +75,7 @@ const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange }) => {
                     const movementX = touch.clientX - lastTouch.clientX;
                     const movementY = touch.clientY - lastTouch.clientY;
 
-                    onChange(movementX - movementY);
+                    onChange(calculateChange(movementX, movementY));
 
                     return {
                         identifier: touch.identifier,
