@@ -1,6 +1,8 @@
-import { ChangeEvent, FC, useEffect, useRef } from "react";
+import { FC, useRef } from "react";
 import { useRecoilState } from "recoil";
+import env from "../env";
 import { isPlayingState, tempoState } from "../recoil/rhythm-state";
+import { clamp } from "../utils/math-utils";
 import MinusIcon from "./icons/MinusIcon";
 import PauseIcon from "./icons/PauseIcon";
 import PlayIcon from "./icons/PlayIcon";
@@ -20,13 +22,8 @@ const RhythmControls: FC = () => {
         setTempo((value) => value + amount);
     }
 
-    function handleTempoChange(event: ChangeEvent<HTMLInputElement>) {
-        const value = Number(event.target.value);
-        console.log("here");
-
-        if (!isNaN(value)) {
-            setTempo(value);
-        }
+    function handleTempoChange(changeAmount: number) {
+        setTempo((value) => clamp(value + changeAmount, env.TEMPO_MIN, env.TEMPO_MAX));
     }
 
     return (
@@ -40,7 +37,7 @@ const RhythmControls: FC = () => {
             </button>
 
             <div className="flex justify-between items-center">
-                <Knob min={1} max={200} value={tempo} onChange={(value) => setTempo(value)} />
+                <Knob min={1} max={200} value={tempo} onChange={(changeAmount) => handleTempoChange(changeAmount)} />
                 <button onClick={() => incrementTempo(-1)} className="flex justify-center">
                     <MinusIcon className="stroke-gray-400 w-5 h-5" />
                 </button>
@@ -51,7 +48,7 @@ const RhythmControls: FC = () => {
                     step={1}
                     ref={knobRef}
                     // value={tempo}
-                    onChange={(event) => handleTempoChange(event)}
+                    // onChange={}
                     className="input-knob"
                     data-fgcolor="#fff"
                     data-bgcolor="#374151"
