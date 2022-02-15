@@ -1,4 +1,4 @@
-import { FC, useRef } from "react";
+import { FC } from "react";
 import { useRecoilState } from "recoil";
 import env from "../env";
 import { isPlayingState, tempoState } from "../recoil/rhythm-state";
@@ -12,7 +12,6 @@ import Knob from "./input/Knob";
 const RhythmControls: FC = () => {
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
     const [tempo, setTempo] = useRecoilState(tempoState);
-    const knobRef = useRef<HTMLInputElement>(null);
 
     function handleClickPlay() {
         setPlaying((value) => !value);
@@ -37,23 +36,10 @@ const RhythmControls: FC = () => {
             </button>
 
             <div className="flex justify-between items-center">
-                <Knob min={1} max={200} value={tempo} onChange={(changeAmount) => handleTempoChange(changeAmount)} />
                 <button onClick={() => incrementTempo(-1)} className="flex justify-center">
                     <MinusIcon className="stroke-gray-400 w-5 h-5" />
                 </button>
-                <input
-                    type="range"
-                    min={1}
-                    max={120}
-                    step={1}
-                    ref={knobRef}
-                    // value={tempo}
-                    // onChange={}
-                    className="input-knob"
-                    data-fgcolor="#fff"
-                    data-bgcolor="#374151"
-                    data-diameter="40"
-                />
+                <Knob min={1} max={200} value={tempo} onChange={(changeAmount) => handleTempoChange(changeAmount)} />
                 <button onClick={() => incrementTempo(1)} className="flex justify-center">
                     <PlusIcon className="stroke-gray-400 w-5 h-5" />
                 </button>
