@@ -38,6 +38,8 @@ module.exports = {
             fuchsia: colors.fuchsia,
             pink: colors.pink,
             rose: colors.rose,
+            "orange-dark": colors.orange[600],
+            "orange-light": colors.orange[400],
         }),
         columns: {
             auto: "auto",
