@@ -1,5 +1,5 @@
 import { isEqual } from "lodash";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { v4 } from "uuid";
 import { createTrack } from "../factories/track-factory";
@@ -7,6 +7,7 @@ import { useStepDelay } from "../hooks/rhythm-hooks";
 import { isPlayingState, rhythmState, tracksState } from "../recoil/rhythm-state";
 import { Instruments } from "../types/rhythm-types";
 import RhythmControls from "./RhythmControls";
+import TrackCircle from "./TrackCircle";
 import TrackEditor from "./TrackEditor";
 
 const RhythmEditor: FC = () => {
@@ -15,6 +16,7 @@ const RhythmEditor: FC = () => {
     const [tracks, setTracks] = useRecoilState(tracksState);
     const [trackStepsCache, setTrackStepCache] = useState(Object.values(tracks).map((track) => track.steps));
     const stepDelay = useStepDelay();
+    const circlesContainer = useRef<HTMLDivElement>(null);
 
     // TODO: devise a more efficient method of listening for track step count changes.
     useEffect(() => {
@@ -53,8 +55,15 @@ const RhythmEditor: FC = () => {
 
     function addTrack() {
         const id = v4();
-        setTracks((value) => ({ ...value, [id]: createTrack(id, Instruments.KICK, 8, 3) }));
+        setTracks((value) => ({
+            ...value,
+            [id]: createTrack(id, Instruments.KICK, 8, 3),
+        }));
     }
+
+    const circlesContainerStyle = {
+        height: circlesContainer.current?.offsetWidth,
+    };
 
     return (
         <div className="flex flex-col items-center">
@@ -63,9 +72,16 @@ const RhythmEditor: FC = () => {
             <p>
                 {rhythm.currentStep}/{rhythm.length}
             </p>
-            {Object.keys(tracks).map((id) => (
-                <TrackEditor key={id} id={id} />
-            ))}
+            <div className="w-full flex justify-center relative" ref={circlesContainer} style={circlesContainerStyle}>
+                {Object.keys(tracks).map((id, i) => (
+                    <TrackCircle key={id} id={id} index={i} />
+                ))}
+            </div>
+            <div className="w-full flex justify-center">
+                {Object.keys(tracks).map((id) => (
+                    <TrackEditor key={id} id={id} />
+                ))}
+            </div>
         </div>
     );
 };
