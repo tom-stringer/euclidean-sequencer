@@ -31,7 +31,8 @@ const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange }) => {
         return Math.round(0.5 * (movementX - movementY));
     }
 
-    function handleMouseDown() {
+    function handleMouseDown(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        event.preventDefault();
         document.addEventListener("mouseup", handleMouseUp);
         document.addEventListener("mousemove", handleMouseMove);
     }
@@ -104,8 +105,8 @@ const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange }) => {
     return (
         <div
             ref={knob}
-            onMouseDown={() => handleMouseDown()}
-            className="w-8 h-8 rounded-full bg-gray-700 flex justify-center cursor-grab"
+            onMouseDown={(event) => handleMouseDown(event)}
+            className="w-12 h-12 rounded-full bg-surface-2 flex justify-center cursor-grab"
             style={style}>
             <div className="h-4 w-1 bg-white"></div>
         </div>

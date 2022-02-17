@@ -6,7 +6,7 @@ const App: FC = () => {
     const [isDebugging, setDebugging] = useState(false);
 
     return (
-        <div className="bg-gray-900 text-white">
+        <div className="container bg-gray-900 text-white p-4">
             <RhythmEditor />
             <label htmlFor="isDebugging" className="">
                 Debug Mode:

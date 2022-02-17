@@ -8,6 +8,7 @@ import { isPlayingState, rhythmState, tracksState } from "../recoil/rhythm-state
 import { Instruments } from "../types/rhythm-types";
 import RhythmControls from "./RhythmControls";
 import TrackCircle from "./TrackCircle";
+import TrackControls from "./TrackControls";
 import TrackEditor from "./TrackEditor";
 
 const RhythmEditor: FC = () => {
@@ -66,7 +67,7 @@ const RhythmEditor: FC = () => {
     };
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="container mx-auto">
             <RhythmControls />
             <button onClick={() => addTrack()}>Add Track</button>
             <p>
@@ -77,11 +78,9 @@ const RhythmEditor: FC = () => {
                     <TrackCircle key={id} id={id} index={i} />
                 ))}
             </div>
-            <div className="w-full flex justify-center">
-                {Object.keys(tracks).map((id) => (
-                    <TrackEditor key={id} id={id} />
-                ))}
-            </div>
+            {Object.keys(tracks).map((id) => (
+                <TrackControls key={id} id={id} />
+            ))}
         </div>
     );
 };

@@ -1,12 +1,15 @@
 import { atom, DefaultValue, selector, selectorFamily } from "recoil";
-import { Rhythm, Track } from "../types/rhythm-types";
+import { createTrack } from "../factories/track-factory";
+import { Instruments, Rhythm, Track } from "../types/rhythm-types";
 
 export const rhythmState = atom<Rhythm>({
     key: "rhythm",
     default: {
         length: 0,
         currentStep: 0,
-        tracks: {},
+        tracks: {
+            hello: createTrack("hello", Instruments.KICK, 8, 3),
+        },
     },
 });
 
