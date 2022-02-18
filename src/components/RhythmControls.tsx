@@ -2,7 +2,6 @@ import { FC } from "react";
 import { useRecoilState } from "recoil";
 import env from "../env";
 import { isPlayingState, tempoState } from "../recoil/rhythm-state";
-import { clamp } from "../utils/math-utils";
 import PauseIcon from "./icons/PauseIcon";
 import PlayIcon from "./icons/PlayIcon";
 import KnobGroup from "./input/KnobGroup";
@@ -15,8 +14,8 @@ const RhythmControls: FC = () => {
         setPlaying((value) => !value);
     }
 
-    function handleTempoChange(changeAmount: number) {
-        setTempo((value) => clamp(value + changeAmount, env.TEMPO_MIN, env.TEMPO_MAX));
+    function handleTempoChange(value: number) {
+        setTempo(Math.floor(value));
     }
 
     return (
@@ -33,7 +32,7 @@ const RhythmControls: FC = () => {
                 value={tempo}
                 min={env.TEMPO_MIN}
                 max={env.TEMPO_MAX}
-                onChange={(changeAmount) => handleTempoChange(changeAmount)}
+                onChange={(value) => handleTempoChange(value)}
             />
 
             <p className="text-lg">

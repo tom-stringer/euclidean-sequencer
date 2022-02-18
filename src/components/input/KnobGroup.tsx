@@ -8,7 +8,7 @@ interface KnobGroupProps {
     max: number;
     step?: number;
     value: number;
-    onChange: (changeAmount: number) => void;
+    onChange: (value: number) => void;
     title?: string;
     showValue?: boolean;
 }
@@ -24,7 +24,7 @@ const KnobGroup: FC<KnobGroupProps> = ({ min, max, step = 1, value, title, showV
                 <button onClick={() => onChange(-step)} className="flex justify-center mx-1">
                     <MinusIcon className="stroke-muted w-6 h-6" />
                 </button>
-                <Knob min={min} max={max} value={value} onChange={(changeAmount) => onChange(changeAmount)} />
+                <Knob min={min} max={max} value={value} onChange={onChange} />
                 <button onClick={() => onChange(+step)} className="flex justify-center mx-1">
                     <PlusIcon className="stroke-muted w-6 h-6" />
                 </button>

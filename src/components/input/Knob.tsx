@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import { mapRange } from "../../utils/math-utils";
+import { clamp, mapRange } from "../../utils/math-utils";
 
 interface KnobProps {
     min: number;
     max: number;
     step?: number;
     value: number;
-    onChange: (changeAmount: number) => void;
+    onChange: (value: number) => void;
 }
 
 interface Touch {
@@ -18,6 +18,7 @@ interface Touch {
 const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange }) => {
     const knob = useRef<HTMLDivElement>(null);
     const [_, setTouch] = useState<Touch | null>(null);
+    const [knobValue, setKnobValue] = useState(value);
 
     useEffect(() => {
         knob.current?.addEventListener("touchstart", handleTouchStart, { passive: false });
@@ -27,8 +28,10 @@ const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange }) => {
         };
     }, []);
 
+    useEffect(() => onChange(knobValue), [knobValue]);
+
     function calculateChange(movementX: number, movementY: number) {
-        return Math.round(0.5 * (movementX - movementY));
+        return ((movementX - movementY) / 200) * (max - min);
     }
 
     function handleMouseDown(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -38,7 +41,7 @@ const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange }) => {
     }
 
     function handleMouseMove(event: MouseEvent) {
-        onChange(calculateChange(event.movementX, event.movementY));
+        setKnobValue((previous) => clamp(previous + calculateChange(event.movementX, event.movementY), min, max));
     }
 
     function handleMouseUp() {

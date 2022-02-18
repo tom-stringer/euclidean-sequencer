@@ -48,24 +48,24 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
         });
     }
 
-    function handleStepsChange(change: number) {
+    function handleStepsChange(value: number) {
         setTrack((previous) => ({
             ...previous,
-            steps: clamp(previous.steps + change, 1, 16),
+            steps: Math.floor(value),
         }));
     }
 
-    function handlePulsesChange(change: number) {
+    function handlePulsesChange(value: number) {
         setTrack((previous) => ({
             ...previous,
-            pulses: clamp(previous.pulses + change, 1, 16),
+            pulses: Math.floor(value),
         }));
     }
 
-    function handleRotationChange(change: number) {
+    function handleRotationChange(value: number) {
         setTrack((previous) => ({
             ...previous,
-            rotation: clamp(previous.rotation + change, 0, 16),
+            rotation: Math.floor(value),
         }));
     }
 
@@ -96,7 +96,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                         value={track.steps}
                         min={1}
                         max={16}
-                        onChange={(change) => handleStepsChange(change)}
+                        onChange={(value) => handleStepsChange(value)}
                         title="Steps"
                         showValue
                     />
@@ -104,7 +104,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                         value={track.pulses}
                         min={1}
                         max={16}
-                        onChange={(change) => handlePulsesChange(change)}
+                        onChange={(value) => handlePulsesChange(value)}
                         title="Pulses"
                         showValue
                     />
@@ -112,7 +112,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                         value={track.rotation}
                         min={0}
                         max={16}
-                        onChange={(change) => handleRotationChange(change)}
+                        onChange={(value) => handleRotationChange(value)}
                         title="Rotation"
                         showValue
                     />

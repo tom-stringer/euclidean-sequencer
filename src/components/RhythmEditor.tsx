@@ -9,7 +9,6 @@ import { Instruments } from "../types/rhythm-types";
 import RhythmControls from "./RhythmControls";
 import TrackCircle from "./TrackCircle";
 import TrackControls from "./TrackControls";
-import TrackEditor from "./TrackEditor";
 
 const RhythmEditor: FC = () => {
     const [rhythm, setRhythm] = useRecoilState(rhythmState);
