@@ -34,6 +34,10 @@ const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange }) => {
         return ((movementX - movementY) / 200) * (max - min);
     }
 
+    function handleMovement(movementX: number, movementY: number) {
+        setKnobValue((previous) => clamp(previous + calculateChange(movementX, movementY), min, max));
+    }
+
     function handleMouseDown(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         event.preventDefault();
         document.addEventListener("mouseup", handleMouseUp);
@@ -41,7 +45,7 @@ const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange }) => {
     }
 
     function handleMouseMove(event: MouseEvent) {
-        setKnobValue((previous) => clamp(previous + calculateChange(event.movementX, event.movementY), min, max));
+        handleMovement(event.movementX, event.movementY);
     }
 
     function handleMouseUp() {
@@ -79,7 +83,7 @@ const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange }) => {
                     const movementX = touch.clientX - lastTouch.clientX;
                     const movementY = touch.clientY - lastTouch.clientY;
 
-                    onChange(calculateChange(movementX, movementY));
+                    handleMovement(movementX, movementY);
 
                     return {
                         identifier: touch.identifier,
