@@ -18,6 +18,10 @@ const RhythmControls: FC = () => {
         setTempo(Math.floor(value));
     }
 
+    function handleTempoIncrement(change: number) {
+        setTempo((value) => value + change);
+    }
+
     return (
         <div className="flex justify-evenly items-center bg-gray-800 rounded-lg px-5 py-3">
             <button onClick={() => handleClickPlay()} className="flex justify-center">
@@ -33,6 +37,7 @@ const RhythmControls: FC = () => {
                 min={env.TEMPO_MIN}
                 max={env.TEMPO_MAX}
                 onChange={(value) => handleTempoChange(value)}
+                onIncrement={(change) => handleTempoIncrement(change)}
             />
 
             <p className="text-lg">

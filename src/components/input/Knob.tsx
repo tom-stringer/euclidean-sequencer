@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { clamp, mapRange } from "../../utils/math-utils";
 
@@ -7,6 +8,7 @@ interface KnobProps {
     step?: number;
     value: number;
     onChange: (value: number) => void;
+    colour?: string;
 }
 
 interface Touch {
@@ -15,7 +17,7 @@ interface Touch {
     clientY: number;
 }
 
-const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange }) => {
+const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange, colour }) => {
     const knob = useRef<HTMLDivElement>(null);
     const [_, setTouch] = useState<Touch | null>(null);
     const [knobValue, setKnobValue] = useState(value);
@@ -109,13 +111,15 @@ const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange }) => {
         transform: `rotate(${rotation}deg)`,
     };
 
+    const className = classNames("h-5 w-1", { ["bg-" + colour]: colour, "bg-white": !colour });
+
     return (
         <div
             ref={knob}
             onMouseDown={(event) => handleMouseDown(event)}
             className="w-12 h-12 rounded-full bg-surface-2 flex justify-center cursor-grab"
             style={style}>
-            <div className="h-4 w-1 bg-white"></div>
+            <div className={className}></div>
         </div>
     );
 };

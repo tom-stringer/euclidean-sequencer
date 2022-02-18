@@ -9,11 +9,35 @@ interface KnobGroupProps {
     step?: number;
     value: number;
     onChange: (value: number) => void;
+    onIncrement: (change: number) => void;
     title?: string;
     showValue?: boolean;
+    colour?: string;
 }
 
-const KnobGroup: FC<KnobGroupProps> = ({ min, max, step = 1, value, title, showValue, onChange }) => {
+const KnobGroup: FC<KnobGroupProps> = ({
+    min,
+    max,
+    step = 1,
+    value,
+    title,
+    showValue,
+    onChange,
+    onIncrement,
+    colour,
+}) => {
+    function handleIncrement(change: number) {
+        const computed = value + change;
+
+        if (computed > max) {
+            onChange(max);
+        } else if (computed < min) {
+            onChange(min);
+        } else {
+            onIncrement(change);
+        }
+    }
+
     return (
         <div className="flex flex-col items-center">
             {/* Title. */}
@@ -21,11 +45,11 @@ const KnobGroup: FC<KnobGroupProps> = ({ min, max, step = 1, value, title, showV
 
             {/* Buttons and knob. */}
             <div className="flex justify-between items-center mb-2">
-                <button onClick={() => onChange(-step)} className="flex justify-center mx-1">
+                <button onClick={() => handleIncrement(-step)} className="flex justify-center mx-1">
                     <MinusIcon className="stroke-muted w-6 h-6" />
                 </button>
-                <Knob min={min} max={max} value={value} onChange={onChange} />
-                <button onClick={() => onChange(+step)} className="flex justify-center mx-1">
+                <Knob min={min} max={max} value={value} onChange={onChange} colour={colour} />
+                <button onClick={() => handleIncrement(step)} className="flex justify-center mx-1">
                     <PlusIcon className="stroke-muted w-6 h-6" />
                 </button>
             </div>

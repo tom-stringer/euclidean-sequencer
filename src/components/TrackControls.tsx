@@ -1,8 +1,8 @@
 import { getPattern } from "euclidean-rhythms";
 import { FC, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
+import env from "../env";
 import { trackState } from "../recoil/rhythm-state";
-import { clamp } from "../utils/math-utils";
 import { instruments, rotateNecklace } from "../utils/rhythm-utils";
 import ChevronDownIcon from "./icons/ChevronDownIcon";
 import ChevronUpIcon from "./icons/ChevronUpIcon";
@@ -17,6 +17,8 @@ enum DisplayState {
     OPEN,
     ADVANCED,
 }
+
+type TrackControl = "steps" | "pulses" | "rotation";
 
 const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     const [track, setTrack] = useRecoilState(trackState(id));
@@ -33,6 +35,15 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
         });
     }, [track.pulses, track.steps, track.rotation]);
 
+    useEffect(() => {
+        if (track.pulses > track.steps) {
+            handleChange(track.steps, "pulses");
+        }
+        if (track.rotation > track.steps) {
+            handleChange(track.steps, "rotation");
+        }
+    }, [track.steps]);
+
     function handleClickChevron() {
         setDisplayState((previousState) => {
             switch (previousState) {
@@ -48,24 +59,17 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
         });
     }
 
-    function handleStepsChange(value: number) {
-        setTrack((previous) => ({
-            ...previous,
-            steps: Math.floor(value),
+    function handleChange(value: number, control: TrackControl) {
+        setTrack((current) => ({
+            ...current,
+            [control]: Math.floor(value),
         }));
     }
 
-    function handlePulsesChange(value: number) {
-        setTrack((previous) => ({
-            ...previous,
-            pulses: Math.floor(value),
-        }));
-    }
-
-    function handleRotationChange(value: number) {
-        setTrack((previous) => ({
-            ...previous,
-            rotation: Math.floor(value),
+    function handleIncrement(change: number, control: TrackControl) {
+        setTrack((current) => ({
+            ...current,
+            [control]: Math.floor(current[control] + change),
         }));
     }
 
@@ -94,27 +98,33 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                 <div className="flex justify-between items-center my-4">
                     <KnobGroup
                         value={track.steps}
-                        min={1}
-                        max={16}
-                        onChange={(value) => handleStepsChange(value)}
+                        min={env.STEPS_MIN}
+                        max={env.STEPS_MAX}
+                        onChange={(value) => handleChange(value, "steps")}
+                        onIncrement={(change) => handleIncrement(change, "steps")}
                         title="Steps"
                         showValue
+                        colour="orange-light"
                     />
                     <KnobGroup
                         value={track.pulses}
-                        min={1}
-                        max={16}
-                        onChange={(value) => handlePulsesChange(value)}
+                        min={0}
+                        max={track.steps}
+                        onChange={(value) => handleChange(value, "pulses")}
+                        onIncrement={(change) => handleIncrement(change, "pulses")}
                         title="Pulses"
                         showValue
+                        colour="orange-light"
                     />
                     <KnobGroup
                         value={track.rotation}
                         min={0}
-                        max={16}
-                        onChange={(value) => handleRotationChange(value)}
+                        max={track.steps}
+                        onChange={(value) => handleChange(value, "rotation")}
+                        onIncrement={(change) => handleIncrement(change, "rotation")}
                         title="Rotation"
                         showValue
+                        colour="orange-light"
                     />
                 </div>
             )}
