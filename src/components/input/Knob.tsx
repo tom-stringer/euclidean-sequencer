@@ -28,7 +28,7 @@ const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange, colour }) =>
         return () => {
             knob.current?.removeEventListener("touchstart", handleTouchStart);
         };
-    }, []);
+    }, [min, max]);
 
     useEffect(() => onChange(knobValue), [knobValue]);
 
