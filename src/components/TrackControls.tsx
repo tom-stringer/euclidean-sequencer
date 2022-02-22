@@ -1,8 +1,9 @@
 import { getPattern } from "euclidean-rhythms";
+import { Howl } from "howler";
 import { FC, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import env from "../env";
-import { trackState } from "../recoil/rhythm-state";
+import { currentStepState, isPlayingState, trackState } from "../recoil/rhythm-state";
 import { instruments, rotateNecklace } from "../utils/rhythm-utils";
 import ChevronDownIcon from "./icons/ChevronDownIcon";
 import ChevronUpIcon from "./icons/ChevronUpIcon";
@@ -23,8 +24,12 @@ type TrackControl = "steps" | "pulses" | "rotation";
 
 const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     const [track, setTrack] = useRecoilState(trackState(id));
+    const resetTrack = useResetRecoilState(trackState(id));
     const [displayState, setDisplayState] = useState(DisplayState.CLOSED);
+    const [howl, setHowl] = useState(new Howl({ src: instruments[track.instrument].src }));
     const instrumentName = instruments[track.instrument].name;
+    const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
+    const [currentStep, setCurrentStep] = useRecoilState(currentStepState);
 
     useEffect(() => {
         setTrack((value) => {
@@ -45,6 +50,21 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
         }
     }, [track.steps]);
 
+    useEffect(() => {
+        if (isPlaying && track.necklace[currentStep % track.steps]) {
+            howl.play();
+        }
+    }, [isPlaying, currentStep]);
+
+    useEffect(() => {
+        setPlaying(false);
+        setCurrentStep(0);
+    }, [track.steps]);
+
+    useEffect(() => {
+        setHowl(new Howl({ src: instruments[track.instrument].src }));
+    }, [track.instrument]);
+
     function handleClickChevron() {
         setDisplayState((previousState) => {
             switch (previousState) {
@@ -60,7 +80,9 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
         });
     }
 
-    function handleClickClose() {}
+    function handleClickClose() {
+        resetTrack();
+    }
 
     function handleChange(value: number, control: TrackControl) {
         setTrack((current) => ({

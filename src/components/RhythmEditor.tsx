@@ -3,14 +3,15 @@ import { FC, useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useStepDelay } from "../hooks/rhythm-hooks";
 import { isDebuggingState } from "../recoil/debug-state";
-import { isPlayingState, rhythmState, tracksState } from "../recoil/rhythm-state";
+import { currentStepState, isPlayingState, rhythmLengthState, tracksState } from "../recoil/rhythm-state";
 import AddTrackButton from "./AddTrackButton";
 import RhythmControls from "./RhythmControls";
 import TrackCircle from "./TrackCircle";
 import TrackControls from "./TrackControls";
 
 const RhythmEditor: FC = () => {
-    const [rhythm, setRhythm] = useRecoilState(rhythmState);
+    const [rhythmLength, setRhythmLength] = useRecoilState(rhythmLengthState);
+    const [currentStep, setCurrentStep] = useRecoilState(currentStepState);
     const [isPlaying] = useRecoilState(isPlayingState);
     const [tracks, setTracks] = useRecoilState(tracksState);
     const [trackStepsCache, setTrackStepCache] = useState(Object.values(tracks).map((track) => track.steps));
@@ -31,11 +32,7 @@ const RhythmEditor: FC = () => {
                 1
             );
 
-            setRhythm((rhythm) => ({
-                ...rhythm,
-                length,
-            }));
-
+            setRhythmLength(length);
             setTrackStepCache(trackSteps);
         }
     }, [tracks]);
@@ -43,18 +40,12 @@ const RhythmEditor: FC = () => {
     useEffect(() => {
         if (isPlaying) {
             setTimeout(() => {
-                setRhythm((value) => ({
-                    ...value,
-                    currentStep: (value.currentStep + 1) % value.length,
-                }));
+                setCurrentStep((current) => (current + 1) % rhythmLength);
             }, stepDelay);
         } else {
-            setRhythm((value) => ({
-                ...value,
-                currentStep: 0,
-            }));
+            setCurrentStep(0);
         }
-    }, [isPlaying, rhythm.currentStep]);
+    }, [isPlaying, currentStep]);
 
     useEffect(() => {
         setCirclesContainerHeight(circlesContainer.current?.offsetWidth);
@@ -65,7 +56,7 @@ const RhythmEditor: FC = () => {
             <RhythmControls />
             {isDebugging && (
                 <p>
-                    {rhythm.currentStep}/{rhythm.length}
+                    {currentStep}/{rhythmLength}
                 </p>
             )}
             <div

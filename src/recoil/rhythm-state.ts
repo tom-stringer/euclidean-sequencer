@@ -1,28 +1,21 @@
-import { atom, DefaultValue, selector, selectorFamily } from "recoil";
+import { atom, DefaultValue, selectorFamily } from "recoil";
 import { createTrack } from "../factories/track-factory";
-import { Instruments, Rhythm, Track } from "../types/rhythm-types";
+import { Instruments, Track } from "../types/rhythm-types";
 
-export const rhythmState = atom<Rhythm>({
-    key: "rhythm",
-    default: {
-        length: 0,
-        currentStep: 0,
-        tracks: {
-            hello: createTrack("hello", Instruments.KICK, 8, 3),
-        },
-    },
+export const rhythmLengthState = atom<number>({
+    key: "rhythmLength",
+    default: 8, // TODO: change this to 0 after testing
 });
 
-export const tracksState = selector<Record<string, Track>>({
-    key: "tracks",
-    get: ({ get }) => get(rhythmState).tracks,
-    set: ({ get, set }, value) => {
-        if (value instanceof DefaultValue) {
-            return;
-        }
+export const currentStepState = atom<number>({
+    key: "currentStep",
+    default: 0,
+});
 
-        const rhythm = get(rhythmState);
-        set(rhythmState, { ...rhythm, tracks: value });
+export const tracksState = atom<Record<string, Track>>({
+    key: "tracks",
+    default: {
+        test: createTrack("test", Instruments.KICK, 8, 3), // TODO: change this to empty after testing
     },
 });
 
@@ -31,15 +24,18 @@ export const trackState = selectorFamily<Track, string>({
     get:
         (id) =>
         ({ get }) =>
-            get(rhythmState).tracks[id],
+            get(tracksState)[id],
     set:
         (id) =>
         ({ get, set }, value) => {
             if (value instanceof DefaultValue) {
+                const tracks = { ...get(tracksState) };
+                delete tracks[id];
+                set(tracksState, tracks);
                 return;
             }
-            const rhythm = get(rhythmState);
-            set(rhythmState, { ...rhythm, tracks: { ...rhythm.tracks, [id]: value } });
+
+            set(tracksState, (previous) => ({ ...previous, [id]: value }));
         },
 });
 

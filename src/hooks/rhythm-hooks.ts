@@ -1,5 +1,5 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { rhythmState, tempoState, tracksState } from "../recoil/rhythm-state";
+import { rhythmLengthState, tempoState, tracksState } from "../recoil/rhythm-state";
 import { getStepDelay } from "../utils/rhythm-utils";
 
 export function useStepDelay(): number {
@@ -9,14 +9,11 @@ export function useStepDelay(): number {
 
 export function useUpdateRhythmLength() {
     const tracks = useRecoilValue(tracksState);
-    const setRhythm = useSetRecoilState(rhythmState);
+    const setRhythmLength = useSetRecoilState(rhythmLengthState);
 
     return function () {
         const length = Object.values(tracks).reduce((value, track) => (track.steps ? value * track.steps : value), 1);
 
-        setRhythm((rhythm) => ({
-            ...rhythm,
-            length,
-        }));
+        setRhythmLength(length);
     };
 }
