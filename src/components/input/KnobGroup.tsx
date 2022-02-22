@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { FC } from "react";
 import MinusIcon from "../icons/MinusIcon";
 import PlusIcon from "../icons/PlusIcon";
@@ -13,6 +14,7 @@ interface KnobGroupProps {
     title?: string;
     showValue?: boolean;
     colour?: string;
+    className?: string;
 }
 
 const KnobGroup: FC<KnobGroupProps> = ({
@@ -25,6 +27,7 @@ const KnobGroup: FC<KnobGroupProps> = ({
     onChange,
     onIncrement,
     colour,
+    className,
 }) => {
     function handleIncrement(change: number) {
         const computed = value + change;
@@ -39,7 +42,7 @@ const KnobGroup: FC<KnobGroupProps> = ({
     }
 
     return (
-        <div className="flex flex-col items-center">
+        <div className={classNames("flex flex-col items-center", className)}>
             {/* Title. */}
             {title && <h1 className="text-muted text-sm mb-2">{title}</h1>}
 

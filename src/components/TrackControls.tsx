@@ -74,7 +74,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     }
 
     return (
-        <div className="rounded-lg w-full px-4 py-2 bg-surface-1 border-t-2 border-orange-light">
+        <div className="rounded-lg w-full px-4 py-2 my-4 bg-surface-1 border-t-2 border-orange-light">
             {/* Top bar: name and chevron. */}
             <div className="flex justify-between items-center">
                 {/* Instrument name and indicator. */}

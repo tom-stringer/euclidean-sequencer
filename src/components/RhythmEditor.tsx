@@ -1,11 +1,10 @@
 import { isEqual } from "lodash";
 import { FC, useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
-import { v4 } from "uuid";
-import { createTrack } from "../factories/track-factory";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useStepDelay } from "../hooks/rhythm-hooks";
+import { isDebuggingState } from "../recoil/debug-state";
 import { isPlayingState, rhythmState, tracksState } from "../recoil/rhythm-state";
-import { Instruments } from "../types/rhythm-types";
+import AddTrackButton from "./AddTrackButton";
 import RhythmControls from "./RhythmControls";
 import TrackCircle from "./TrackCircle";
 import TrackControls from "./TrackControls";
@@ -17,6 +16,10 @@ const RhythmEditor: FC = () => {
     const [trackStepsCache, setTrackStepCache] = useState(Object.values(tracks).map((track) => track.steps));
     const stepDelay = useStepDelay();
     const circlesContainer = useRef<HTMLDivElement>(null);
+    const [circlesContainerHeight, setCirclesContainerHeight] = useState<number | undefined>(
+        circlesContainer.current?.offsetWidth
+    );
+    const isDebugging = useRecoilValue(isDebuggingState);
 
     // TODO: devise a more efficient method of listening for track step count changes.
     useEffect(() => {
@@ -53,26 +56,22 @@ const RhythmEditor: FC = () => {
         }
     }, [isPlaying, rhythm.currentStep]);
 
-    function addTrack() {
-        const id = v4();
-        setTracks((value) => ({
-            ...value,
-            [id]: createTrack(id, Instruments.KICK, 8, 3),
-        }));
-    }
-
-    const circlesContainerStyle = {
-        height: circlesContainer.current?.offsetWidth,
-    };
+    useEffect(() => {
+        setCirclesContainerHeight(circlesContainer.current?.offsetWidth);
+    }, [circlesContainer.current?.offsetWidth]);
 
     return (
-        <div className="container mx-auto">
+        <>
             <RhythmControls />
-            <button onClick={() => addTrack()}>Add Track</button>
-            <p>
-                {rhythm.currentStep}/{rhythm.length}
-            </p>
-            <div className="w-full flex justify-center relative" ref={circlesContainer} style={circlesContainerStyle}>
+            {isDebugging && (
+                <p>
+                    {rhythm.currentStep}/{rhythm.length}
+                </p>
+            )}
+            <div
+                className="w-full flex justify-center relative my-4"
+                ref={circlesContainer}
+                style={{ height: circlesContainerHeight }}>
                 {Object.keys(tracks).map((id, i) => (
                     <TrackCircle key={id} id={id} index={i} />
                 ))}
@@ -80,7 +79,10 @@ const RhythmEditor: FC = () => {
             {Object.keys(tracks).map((id) => (
                 <TrackControls key={id} id={id} />
             ))}
-        </div>
+            <div className="flex justify-center">
+                <AddTrackButton />
+            </div>
+        </>
     );
 };
 

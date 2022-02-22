@@ -1,16 +1,16 @@
-import { FC, useState } from "react";
+import { FC } from "react";
+import { useRecoilState } from "recoil";
+import { isDebuggingState } from "../recoil/debug-state";
 import RhythmEditor from "./RhythmEditor";
 import RecoilDebugger from "./utils/RecoilDebugger";
 
 const App: FC = () => {
-    const [isDebugging, setDebugging] = useState(false);
+    const [isDebugging, setDebugging] = useRecoilState(isDebuggingState);
 
     return (
-        <div className="container bg-gray-900 text-white p-4">
+        <main className="text-white bg-gray-900 p-4 overflow-auto">
             <RhythmEditor />
-            <label htmlFor="isDebugging" className="">
-                Debug Mode:
-            </label>
+            <label htmlFor="isDebugging">Debug Mode:</label>
             <input
                 type="checkbox"
                 id="isDebugging"
@@ -18,7 +18,7 @@ const App: FC = () => {
                 onChange={(event) => setDebugging(event.target.checked)}
             />
             {isDebugging && <RecoilDebugger />}
-        </div>
+        </main>
     );
 };
 
