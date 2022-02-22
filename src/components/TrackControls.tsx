@@ -6,6 +6,7 @@ import { trackState } from "../recoil/rhythm-state";
 import { instruments, rotateNecklace } from "../utils/rhythm-utils";
 import ChevronDownIcon from "./icons/ChevronDownIcon";
 import ChevronUpIcon from "./icons/ChevronUpIcon";
+import CloseIcon from "./icons/CloseIcon";
 import KnobGroup from "./input/KnobGroup";
 
 interface TrackControlsProps {
@@ -59,6 +60,8 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
         });
     }
 
+    function handleClickClose() {}
+
     function handleChange(value: number, control: TrackControl) {
         setTrack((current) => ({
             ...current,
@@ -73,9 +76,11 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
         }));
     }
 
+    const chevronClass = "stroke-muted w-5 h-5 hover:stroke-muted-light";
+
     return (
         <div className="rounded-lg w-full px-4 py-2 my-4 bg-surface-1 border-t-2 border-orange-light">
-            {/* Top bar: name and chevron. */}
+            {/* Top bar: name, chevron, close. */}
             <div className="flex justify-between items-center">
                 {/* Instrument name and indicator. */}
                 <div className="flex items-center">
@@ -83,15 +88,16 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                     <h1 className="ml-4 text-lg">{instrumentName}</h1>
                 </div>
 
-                {/* Chevron button. */}
-                <button onClick={() => handleClickChevron()} className="flex justify-center">
-                    {displayState === DisplayState.CLOSED && (
-                        <ChevronDownIcon className="stroke-muted w-5 h-5 float-right" />
-                    )}
-                    {displayState === DisplayState.OPEN && (
-                        <ChevronUpIcon className="stroke-muted w-5 h-5 float-right" />
-                    )}
-                </button>
+                {/* Chevron and close. */}
+                <div className="flex items-center">
+                    <button onClick={() => handleClickChevron()} className="flex justify-center">
+                        {displayState === DisplayState.CLOSED && <ChevronDownIcon className={chevronClass} />}
+                        {displayState === DisplayState.OPEN && <ChevronUpIcon className={chevronClass} />}
+                    </button>
+                    <button onClick={() => handleClickClose()} className="flex justify-center ml-2">
+                        <CloseIcon className="stroke-muted w-5 h-5 hover:stroke-red-light" />
+                    </button>
+                </div>
             </div>
             {/* Knob controls for steps, pulses, rotation. */}
             {displayState === DisplayState.OPEN && (
