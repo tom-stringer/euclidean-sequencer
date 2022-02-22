@@ -2,6 +2,8 @@ export enum Instruments {
     KICK = "kick",
     SNARE = "snare",
     CLOSED_HAT = "closedHat",
+    OPEN_HAT = "openHat",
+    CYMBAL = "cymbal",
 }
 
 export interface Instrument {
