@@ -44,6 +44,7 @@ module.exports = {
             "surface-1": colors.gray[800],
             "surface-2": colors.gray[700],
             "surface-3": colors.gray[600],
+            "surface-4": colors.gray[500],
             muted: colors.gray[400],
             "muted-light": colors.gray[300],
             "muted-dark": colors.gray[500],

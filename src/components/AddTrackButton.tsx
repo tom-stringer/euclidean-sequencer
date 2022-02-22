@@ -1,24 +1,19 @@
 import { FC } from "react";
-import { useSetRecoilState } from "recoil";
-import { v4 } from "uuid";
-import { createTrack } from "../factories/track-factory";
-import { tracksState } from "../recoil/rhythm-state";
-import { Instruments } from "../types/rhythm-types";
+import { useNavigate } from "react-router-dom";
+import { useStopRhythm } from "../hooks/rhythm-hooks";
 import PlusIcon from "./icons/PlusIcon";
 
 const AddTrackButton: FC = () => {
-    const setTracks = useSetRecoilState(tracksState);
+    const navigate = useNavigate();
+    const stopRhythm = useStopRhythm();
 
-    function addTrack() {
-        const id = v4();
-        setTracks((value) => ({
-            ...value,
-            [id]: createTrack(id, Instruments.KICK, 8, 3),
-        }));
+    function handleClickAdd() {
+        stopRhythm();
+        navigate("/add");
     }
 
     return (
-        <button onClick={addTrack} className="group bg-surface-1 hover:bg-surface-2 rounded-full w-10 h-10 p-1">
+        <button onClick={handleClickAdd} className="group bg-surface-1 hover:bg-surface-2 rounded-full w-10 h-10 p-1">
             <PlusIcon className="w-full h-full stroke-muted group-hover:stroke-muted-light" />
         </button>
     );

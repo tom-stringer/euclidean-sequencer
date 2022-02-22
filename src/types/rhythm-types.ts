@@ -5,6 +5,7 @@ export enum Instruments {
 }
 
 export interface Instrument {
+    key: Instruments;
     name: string;
     src: string | string[];
 }
