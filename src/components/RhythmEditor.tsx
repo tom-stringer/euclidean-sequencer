@@ -1,6 +1,6 @@
 import { isEqual } from "lodash";
 import { FC, useEffect, useRef, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useStepDelay } from "../hooks/rhythm-hooks";
 import { isDebuggingState } from "../recoil/debug-state";
 import { currentStepState, isPlayingState, rhythmLengthState, tracksState } from "../recoil/rhythm-state";
@@ -21,6 +21,15 @@ const RhythmEditor: FC = () => {
         circlesContainer.current?.offsetWidth
     );
     const isDebugging = useRecoilValue(isDebuggingState);
+    const setPlaying = useSetRecoilState(isPlayingState);
+
+    useEffect(() => {
+        window.addEventListener("keypress", handleSpacebar);
+
+        return () => {
+            window.removeEventListener("keypress", handleSpacebar);
+        };
+    }, []);
 
     // TODO: devise a more efficient method of listening for track step count changes.
     useEffect(() => {
@@ -50,6 +59,11 @@ const RhythmEditor: FC = () => {
     useEffect(() => {
         setCirclesContainerHeight(circlesContainer.current?.offsetWidth);
     }, [circlesContainer.current?.offsetWidth]);
+
+    function handleSpacebar(event: KeyboardEvent) {
+        event.preventDefault();
+        setPlaying((current) => !current);
+    }
 
     return (
         <>

@@ -48,7 +48,7 @@ const AddTrackPage: FC = () => {
                     onClick={() => playInstrument(instrument)}
                     key={instrument.key}>
                     <div className="flex items-center">
-                        <PlayIcon className="w-5 h-5 fill-white" />
+                        <PlayIcon className="w-5 h-5 fill-muted-light" />
                         <h1 className="text-lg ml-4">{instrument.name}</h1>
                     </div>
 

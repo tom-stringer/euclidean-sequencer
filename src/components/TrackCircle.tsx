@@ -1,5 +1,5 @@
 import { FC, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { trackState } from "../recoil/rhythm-state";
 import Step from "./Step";
 
@@ -9,14 +9,14 @@ interface TrackCircleProps {
 }
 
 const TrackCircle: FC<TrackCircleProps> = ({ id, index }) => {
-    const [track, setTrack] = useRecoilState(trackState(id));
+    const track = useRecoilValue(trackState(id));
     const circle = useRef<HTMLDivElement>(null);
     const radius = (circle.current?.offsetWidth || 0) / 2;
 
     const circleStyle = {
         width: `${90 - index * 15}%`,
         height: `${90 - index * 15}%`,
-        margin: -radius,
+        margin: -radius + "px",
     };
 
     const circleClass =

@@ -40,6 +40,7 @@ module.exports = {
             rose: colors.rose,
             "orange-dark": colors.orange[600],
             "orange-light": colors.orange[400],
+            "orange-white": colors.orange[300],
             background: colors.gray[900],
             "surface-1": colors.gray[800],
             "surface-2": colors.gray[700],
