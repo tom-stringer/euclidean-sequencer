@@ -99,10 +99,12 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
         }));
     }
 
+    const controlsClass = `rounded-lg w-full px-4 py-2 my-4 bg-surface-1 border-t-2 border-${track.colour}-medium`;
     const chevronClass = "stroke-muted w-5 h-5 hover:stroke-muted-light";
+    const knobColour = `${track.colour}-medium`;
 
     return (
-        <div className="rounded-lg w-full px-4 py-2 my-4 bg-surface-1 border-t-2 border-orange-light">
+        <div className={controlsClass}>
             {/* Top bar: name, chevron, close. */}
             <div className="flex justify-between items-center">
                 {/* Instrument name and indicator. */}
@@ -133,7 +135,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                         onIncrement={(change) => handleIncrement(change, "steps")}
                         title="Steps"
                         showValue
-                        colour="orange-light"
+                        colour={knobColour}
                     />
                     <KnobGroup
                         value={track.pulses}
@@ -143,7 +145,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                         onIncrement={(change) => handleIncrement(change, "pulses")}
                         title="Pulses"
                         showValue
-                        colour="orange-light"
+                        colour={knobColour}
                     />
                     <KnobGroup
                         value={track.rotation}
@@ -153,7 +155,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                         onIncrement={(change) => handleIncrement(change, "rotation")}
                         title="Rotation"
                         showValue
-                        colour="orange-light"
+                        colour={knobColour}
                     />
                 </div>
             )}

@@ -1,5 +1,5 @@
 module.exports = {
-    content: ["./src/**/*.{js,jsx,ts,tsx}"],
+    content: ["./src/**/*.{js,jsx,ts,tsx,csv}"],
     presets: [],
     darkMode: "media", // or 'class'
     theme: {
@@ -38,17 +38,29 @@ module.exports = {
             fuchsia: colors.fuchsia,
             pink: colors.pink,
             rose: colors.rose,
+            // Orange.
             "orange-dark": colors.orange[600],
-            "orange-light": colors.orange[400],
-            "orange-white": colors.orange[300],
+            "orange-medium": colors.orange[400],
+            "orange-light": colors.orange[300],
+            // Green.
+            "green-dark": colors.green[700],
+            "green-medium": colors.green[400],
+            "green-light": colors.green[300],
+            // Purple.
+            "purple-dark": colors.purple[700],
+            "purple-medium": colors.purple[400],
+            "purple-light": colors.purple[300],
+            // Background and surfaces.
             background: colors.gray[900],
             "surface-1": colors.gray[800],
             "surface-2": colors.gray[700],
             "surface-3": colors.gray[600],
             "surface-4": colors.gray[500],
+            // Muted.
             muted: colors.gray[400],
             "muted-light": colors.gray[300],
             "muted-dark": colors.gray[500],
+            // Red.
             "red-light": colors.red[400],
         }),
         columns: {

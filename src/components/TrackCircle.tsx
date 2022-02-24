@@ -20,7 +20,9 @@ const TrackCircle: FC<TrackCircleProps> = ({ id, index }) => {
     };
 
     const circleClass =
-        radius !== 0 ? "rounded-full bg-transparent absolute border-2 border-orange-dark top-1/2 left-1/2" : "";
+        radius !== 0
+            ? `rounded-full bg-transparent absolute border-2 border-${track.colour}-dark top-1/2 left-1/2`
+            : "";
 
     return (
         <div className={circleClass} style={circleStyle} ref={circle}>

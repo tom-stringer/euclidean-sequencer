@@ -1,3 +1,5 @@
+import { Colours } from "../utils/colours";
+
 export enum Instruments {
     KICK = "kick",
     SNARE = "snare",
@@ -20,6 +22,7 @@ export interface Track {
     pulses: number;
     rotation: number;
     volume: number;
+    colour: Colours;
 }
 
 export interface Rhythm {

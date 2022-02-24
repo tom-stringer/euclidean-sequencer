@@ -49,10 +49,16 @@ const Step: FC<StepProps> = ({ track, radius, index }) => {
 
     const animate = isPlaying && current ? "current" : "normal";
 
+    const colours = {
+        light: `bg-${track.colour}-light`,
+        medium: `bg-${track.colour}-medium`,
+        dark: `bg-${track.colour}-dark`,
+    };
+
     const className = classNames("rounded-full absolute top top-1/2 left-1/2 transition-colors", {
-        "bg-orange-light": active && !(isPlaying && current),
-        "bg-orange-dark": !active,
-        "bg-orange-white": isPlaying && current,
+        [colours.medium]: active && !(isPlaying && current),
+        [colours.dark]: !active,
+        [colours.light]: isPlaying && current,
     });
 
     return (
