@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilCallback, useSetRecoilState } from "recoil";
 import { v4 } from "uuid";
 import { createTrack } from "../factories/track-factory";
-import { tracksState } from "../recoil/rhythm-state";
+import { trackIdsState, trackState } from "../recoil/rhythm-state";
 import { trackControlsState, TrackControlStates } from "../recoil/ui-state";
 import { Instrument } from "../types/rhythm-types";
 import { instruments } from "../utils/instruments";
@@ -14,13 +14,19 @@ import PlusIcon from "./icons/PlusIcon";
 
 const AddTrackPage: FC = () => {
     const navigate = useNavigate();
-    const setTracks = useSetRecoilState(tracksState);
+    const setTrackIds = useSetRecoilState(trackIdsState);
 
     const addTrackControls = useRecoilCallback(
         ({ set }) =>
-            (id: string) => {
-                set(trackControlsState(id), TrackControlStates.CLOSED);
-            },
+            (id: string) =>
+                set(trackControlsState(id), TrackControlStates.CLOSED),
+        []
+    );
+
+    const addTrack = useRecoilCallback(
+        ({ set }) =>
+            (id: string, instrument: Instrument) =>
+                set(trackState(id), createTrack(id, instrument.key, 8, 4)),
         []
     );
 
@@ -29,16 +35,14 @@ const AddTrackPage: FC = () => {
         howl.play();
     }
 
-    function addTrack(event: React.MouseEvent<HTMLButtonElement, MouseEvent>, instrument: Instrument) {
+    function handleAddTrack(event: React.MouseEvent<HTMLButtonElement, MouseEvent>, instrument: Instrument) {
         event.stopPropagation();
 
         const id = v4();
-        setTracks((value) => ({
-            ...value,
-            [id]: createTrack(id, instrument.key, 8, 4),
-        }));
-
+        addTrack(id, instrument);
         addTrackControls(id);
+
+        setTrackIds((value) => [...value, id]);
 
         navigate("/");
     }
@@ -65,7 +69,7 @@ const AddTrackPage: FC = () => {
 
                     <button
                         className="group rounded-lg bg-surface-3 hover:bg-surface-4 w-10 h-10 p-1"
-                        onClick={(event) => addTrack(event, instrument)}>
+                        onClick={(event) => handleAddTrack(event, instrument)}>
                         <PlusIcon className="w-full h-full stroke-muted-light group-hover:stroke-white" />
                     </button>
                 </button>

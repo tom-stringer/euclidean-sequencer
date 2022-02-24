@@ -1,10 +1,9 @@
-import { isEqual } from "lodash";
 import { FC, useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useStepDelay } from "../hooks/rhythm-hooks";
 import useWindowDimensions from "../hooks/use-window-dimensions";
 import { isDebuggingState } from "../recoil/debug-state";
-import { currentStepState, isPlayingState, rhythmLengthState, tracksState } from "../recoil/rhythm-state";
+import { currentStepState, isPlayingState, rhythmLengthState, trackIdsState } from "../recoil/rhythm-state";
 import AddTrackButton from "./AddTrackButton";
 import RhythmControls from "./RhythmControls";
 import TrackCircle from "./TrackCircle";
@@ -14,8 +13,7 @@ const RhythmEditor: FC = () => {
     const [rhythmLength, setRhythmLength] = useRecoilState(rhythmLengthState);
     const [currentStep, setCurrentStep] = useRecoilState(currentStepState);
     const [isPlaying] = useRecoilState(isPlayingState);
-    const [tracks, setTracks] = useRecoilState(tracksState);
-    const [trackStepsCache, setTrackStepCache] = useState(Object.values(tracks).map((track) => track.steps));
+    const trackIds = useRecoilValue(trackIdsState);
     const stepDelay = useStepDelay();
     const circlesContainer = useRef<HTMLDivElement>(null);
     const [circlesContainerHeight, setCirclesContainerHeight] = useState<number | undefined>(
@@ -32,21 +30,6 @@ const RhythmEditor: FC = () => {
             window.removeEventListener("keypress", handleSpacebar);
         };
     }, []);
-
-    // TODO: devise a more efficient method of listening for track step count changes.
-    useEffect(() => {
-        const trackSteps = Object.values(tracks).map((track) => track.steps);
-
-        if (!isEqual(trackSteps, trackStepsCache)) {
-            const length = Object.values(tracks).reduce(
-                (value, track) => (track.steps ? value * track.steps : value),
-                1
-            );
-
-            setRhythmLength(length);
-            setTrackStepCache(trackSteps);
-        }
-    }, [tracks]);
 
     useEffect(() => {
         if (isPlaying) {
@@ -81,11 +64,11 @@ const RhythmEditor: FC = () => {
                 className="w-full flex justify-center relative my-4"
                 ref={circlesContainer}
                 style={{ height: circlesContainerHeight }}>
-                {Object.keys(tracks).map((id, i) => (
+                {trackIds.map((id, i) => (
                     <TrackCircle key={id} id={id} index={i} />
                 ))}
             </div>
-            {Object.keys(tracks).map((id) => (
+            {trackIds.map((id) => (
                 <TrackControls key={id} id={id} />
             ))}
             <div className="flex justify-center">

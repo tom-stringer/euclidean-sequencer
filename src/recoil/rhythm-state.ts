@@ -1,10 +1,10 @@
-import { atom, DefaultValue, selectorFamily } from "recoil";
+import { atom, atomFamily } from "recoil";
 import { createTrack } from "../factories/track-factory";
 import { Instruments, Track } from "../types/rhythm-types";
 
 export const rhythmLengthState = atom<number>({
     key: "rhythmLength",
-    default: 8, // TODO: change this to 0 after testing
+    default: 8, // TODO: change this after testing
 });
 
 export const currentStepState = atom<number>({
@@ -12,31 +12,14 @@ export const currentStepState = atom<number>({
     default: 0,
 });
 
-export const tracksState = atom<Record<string, Track>>({
-    key: "tracks",
-    default: {
-        test: createTrack("test", Instruments.KICK, 8, 3), // TODO: change this to empty after testing
-    },
+export const trackIdsState = atom<string[]>({
+    key: "trackIds",
+    default: ["test"], // TODO: change this after testing
 });
 
-export const trackState = selectorFamily<Track, string>({
+export const trackState = atomFamily<Track, string>({
     key: "track",
-    get:
-        (id) =>
-        ({ get }) =>
-            get(tracksState)[id],
-    set:
-        (id) =>
-        ({ get, set }, value) => {
-            if (value instanceof DefaultValue) {
-                const tracks = { ...get(tracksState) };
-                delete tracks[id];
-                set(tracksState, tracks);
-                return;
-            }
-
-            set(tracksState, (previous) => ({ ...previous, [id]: value }));
-        },
+    default: createTrack("test", Instruments.KICK, 8, 3), // TODO: change this after testing
 });
 
 export const isPlayingState = atom<boolean>({

@@ -1,9 +1,10 @@
 import { getPattern } from "euclidean-rhythms";
 import { Howl } from "howler";
 import { FC, useEffect, useState } from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import env from "../env";
-import { currentStepState, isPlayingState, trackState } from "../recoil/rhythm-state";
+import { useStopRhythm } from "../hooks/rhythm-hooks";
+import { currentStepState, isPlayingState, trackIdsState, trackState } from "../recoil/rhythm-state";
 import { trackControlsState, TrackControlStates } from "../recoil/ui-state";
 import { instruments } from "../utils/instruments";
 import { rotateNecklace } from "../utils/rhythm-utils";
@@ -27,6 +28,8 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     const instrumentName = instruments[track.instrument].name;
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
     const [currentStep, setCurrentStep] = useRecoilState(currentStepState);
+    const setTrackIds = useSetRecoilState(trackIdsState);
+    const stopRhythm = useStopRhythm();
 
     useEffect(() => {
         setTrack((value) => {
@@ -39,6 +42,8 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     }, [track.pulses, track.steps, track.rotation]);
 
     useEffect(() => {
+        stopRhythm();
+
         if (track.pulses > track.steps) {
             handleChange(track.steps, "pulses");
         }
@@ -52,11 +57,6 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
             howl.play();
         }
     }, [isPlaying, currentStep]);
-
-    useEffect(() => {
-        setPlaying(false);
-        setCurrentStep(0);
-    }, [track.steps]);
 
     useEffect(() => {
         setHowl(new Howl({ src: instruments[track.instrument].src }));
@@ -80,6 +80,13 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     function handleClickClose() {
         removeTrack();
         removeUiState();
+
+        setTrackIds((value) => {
+            const trackIds = [...value];
+
+            trackIds.splice(trackIds.indexOf(id), 1);
+            return trackIds;
+        });
     }
 
     function handleChange(value: number, control: TrackControl) {
