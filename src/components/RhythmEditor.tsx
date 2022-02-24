@@ -2,6 +2,7 @@ import { isEqual } from "lodash";
 import { FC, useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useStepDelay } from "../hooks/rhythm-hooks";
+import useWindowDimensions from "../hooks/use-window-dimensions";
 import { isDebuggingState } from "../recoil/debug-state";
 import { currentStepState, isPlayingState, rhythmLengthState, tracksState } from "../recoil/rhythm-state";
 import AddTrackButton from "./AddTrackButton";
@@ -22,6 +23,7 @@ const RhythmEditor: FC = () => {
     );
     const isDebugging = useRecoilValue(isDebuggingState);
     const setPlaying = useSetRecoilState(isPlayingState);
+    const { width } = useWindowDimensions();
 
     useEffect(() => {
         window.addEventListener("keypress", handleSpacebar);
@@ -58,11 +60,13 @@ const RhythmEditor: FC = () => {
 
     useEffect(() => {
         setCirclesContainerHeight(circlesContainer.current?.offsetWidth);
-    }, [circlesContainer.current?.offsetWidth]);
+    }, [circlesContainer.current?.offsetWidth, width]);
 
     function handleSpacebar(event: KeyboardEvent) {
-        event.preventDefault();
-        setPlaying((current) => !current);
+        if (event.key === " ") {
+            event.preventDefault();
+            setPlaying((current) => !current);
+        }
     }
 
     return (
