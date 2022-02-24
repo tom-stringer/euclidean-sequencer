@@ -7,6 +7,6 @@ export enum TrackControlStates {
 }
 
 export const trackControlsState = atomFamily<TrackControlStates, string>({
-    key: "tracksControls",
+    key: "trackControls",
     default: TrackControlStates.CLOSED,
 });
