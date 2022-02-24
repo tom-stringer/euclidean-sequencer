@@ -4,6 +4,7 @@ import { FC, useEffect, useState } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import env from "../env";
 import { currentStepState, isPlayingState, trackState } from "../recoil/rhythm-state";
+import { trackControlsState, TrackControlStates } from "../recoil/ui-state";
 import { instruments } from "../utils/instruments";
 import { rotateNecklace } from "../utils/rhythm-utils";
 import ChevronDownIcon from "./icons/ChevronDownIcon";
@@ -15,18 +16,13 @@ interface TrackControlsProps {
     id: string;
 }
 
-enum DisplayState {
-    CLOSED,
-    OPEN,
-    ADVANCED,
-}
-
 type TrackControl = "steps" | "pulses" | "rotation";
 
 const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     const [track, setTrack] = useRecoilState(trackState(id));
-    const resetTrack = useResetRecoilState(trackState(id));
-    const [displayState, setDisplayState] = useState(DisplayState.CLOSED);
+    const removeTrack = useResetRecoilState(trackState(id));
+    const [uiState, setUiState] = useRecoilState(trackControlsState(id));
+    const removeUiState = useResetRecoilState(trackControlsState(id));
     const [howl, setHowl] = useState(new Howl({ src: instruments[track.instrument].src }));
     const instrumentName = instruments[track.instrument].name;
     const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
@@ -67,22 +63,23 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     }, [track.instrument]);
 
     function handleClickChevron() {
-        setDisplayState((previousState) => {
+        setUiState((previousState) => {
             switch (previousState) {
-                case DisplayState.CLOSED: {
-                    return DisplayState.OPEN;
+                case TrackControlStates.CLOSED: {
+                    return TrackControlStates.OPEN;
                 }
-                case DisplayState.OPEN: {
-                    return DisplayState.CLOSED;
+                case TrackControlStates.OPEN: {
+                    return TrackControlStates.CLOSED;
                 }
                 default:
-                    return DisplayState.CLOSED;
+                    return TrackControlStates.CLOSED;
             }
         });
     }
 
     function handleClickClose() {
-        resetTrack();
+        removeTrack();
+        removeUiState();
     }
 
     function handleChange(value: number, control: TrackControl) {
@@ -116,8 +113,8 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                 {/* Chevron and close. */}
                 <div className="flex items-center">
                     <button onClick={() => handleClickChevron()} className="flex justify-center">
-                        {displayState === DisplayState.CLOSED && <ChevronDownIcon className={chevronClass} />}
-                        {displayState === DisplayState.OPEN && <ChevronUpIcon className={chevronClass} />}
+                        {uiState === TrackControlStates.CLOSED && <ChevronDownIcon className={chevronClass} />}
+                        {uiState === TrackControlStates.OPEN && <ChevronUpIcon className={chevronClass} />}
                     </button>
                     <button onClick={() => handleClickClose()} className="flex justify-center ml-2">
                         <CloseIcon className="stroke-muted w-5 h-5 hover:stroke-red-light" />
@@ -125,7 +122,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                 </div>
             </div>
             {/* Knob controls for steps, pulses, rotation. */}
-            {displayState === DisplayState.OPEN && (
+            {uiState === TrackControlStates.OPEN && (
                 <div className="flex justify-between items-center my-4">
                     <KnobGroup
                         value={track.steps}

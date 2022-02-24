@@ -1,10 +1,11 @@
 import { Howl } from "howler";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilCallback, useSetRecoilState } from "recoil";
 import { v4 } from "uuid";
 import { createTrack } from "../factories/track-factory";
 import { tracksState } from "../recoil/rhythm-state";
+import { trackControlsState, TrackControlStates } from "../recoil/ui-state";
 import { Instrument } from "../types/rhythm-types";
 import { instruments } from "../utils/instruments";
 import ArrowLeftIcon from "./icons/ArrowLeftIcon";
@@ -14,6 +15,14 @@ import PlusIcon from "./icons/PlusIcon";
 const AddTrackPage: FC = () => {
     const navigate = useNavigate();
     const setTracks = useSetRecoilState(tracksState);
+
+    const addTrackControls = useRecoilCallback(
+        ({ set }) =>
+            (id: string) => {
+                set(trackControlsState(id), TrackControlStates.CLOSED);
+            },
+        []
+    );
 
     function playInstrument(instrument: Instrument) {
         const howl = new Howl({ src: instrument.src });
@@ -28,6 +37,8 @@ const AddTrackPage: FC = () => {
             ...value,
             [id]: createTrack(id, instrument.key, 8, 4),
         }));
+
+        addTrackControls(id);
 
         navigate("/");
     }
