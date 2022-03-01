@@ -7,6 +7,7 @@ import { createTrack } from "../factories/track-factory";
 import { trackIdsState, trackState } from "../recoil/rhythm-state";
 import { trackControlsState, TrackControlStates } from "../recoil/ui-state";
 import { Instrument } from "../types/rhythm-types";
+import { Colours } from "../utils/colours";
 import { instruments } from "../utils/instruments";
 import ArrowLeftIcon from "./icons/ArrowLeftIcon";
 import PlayIcon from "./icons/PlayIcon";
@@ -18,11 +19,26 @@ const AddTrackPage: FC = () => {
     const addTrack = useRecoilCallback(
         ({ set, snapshot }) =>
             async (instrument: Instrument) => {
-                const id = v4();
-                set(trackState(id), createTrack(id, instrument.key, 8, 4));
-                set(trackControlsState(id), TrackControlStates.CLOSED);
-
                 const trackIds = await snapshot.getPromise(trackIdsState);
+
+                const usedColours: Colours[] = [];
+                for (const id of trackIds) {
+                    const track = await snapshot.getPromise(trackState(id));
+                    if (!usedColours.includes(track.colour)) {
+                        usedColours.push(track.colour);
+                    }
+                }
+
+                const availableColours = Object.values(Colours).filter((colour) => !usedColours.includes(colour));
+                let colour = availableColours[0];
+
+                if (!colour) {
+                    colour = Object.values(Colours)[Math.floor(Math.random() * Object.values(Colours).length)];
+                }
+
+                const id = v4();
+                set(trackState(id), createTrack(id, instrument.key, 8, 4, colour));
+                set(trackControlsState(id), TrackControlStates.CLOSED);
                 set(trackIdsState, [...trackIds, id]);
             },
         []

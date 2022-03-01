@@ -8,7 +8,7 @@ export function createTrack(
     instrument: Instruments,
     steps: number,
     pulses: number,
-    colour?: Colours
+    colour: Colours
 ): Track {
     const rotation = 0;
     return {
@@ -19,7 +19,7 @@ export function createTrack(
         pulses,
         rotation,
         volume: 1.0,
-        colour: colour ? colour : Colours.PURPLE,
+        colour,
         currentStep: 0,
     };
 }
