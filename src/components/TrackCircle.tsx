@@ -26,7 +26,7 @@ const TrackCircle: FC<TrackCircleProps> = ({ id, index }) => {
 
     return (
         <div className={circleClass} style={circleStyle} ref={circle}>
-            {radius !== 0 && track.necklace.map((_, i) => <Step track={track} radius={radius} index={i} />)}
+            {radius !== 0 && track.necklace.map((_, i) => <Step id={id} radius={radius} index={i} />)}
         </div>
     );
 };

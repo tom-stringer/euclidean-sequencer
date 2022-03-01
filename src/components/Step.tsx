@@ -1,25 +1,26 @@
 import classNames from "classnames";
-import { FC } from "react";
-import { useRecoilValue } from "recoil";
-import { currentStepState, isPlayingState } from "../recoil/rhythm-state";
-import { Track } from "../types/rhythm-types";
 import { motion } from "framer-motion";
+import { FC, useEffect, useMemo, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { Transport } from "tone";
+import { isPlayingState, trackState } from "../recoil/rhythm-state";
+import { getCurrentStep } from "../utils/rhythm-utils";
 
 interface StepProps {
-    track: Track;
+    id: string;
     radius: number;
     index: number;
 }
 
-const Step: FC<StepProps> = ({ track, radius, index }) => {
-    const currentStep = useRecoilValue(currentStepState);
-    const isPlaying = useRecoilValue(isPlayingState);
-    const active = track.necklace[index];
-    const current = currentStep % track.steps === index;
+const Step: FC<StepProps> = ({ id, radius, index }) => {
+    const track = useRecoilValue(trackState(id));
     const offsetAngle = 360 / track.steps;
     const rotateAngle = offsetAngle * index;
+    const active = useMemo(() => track.necklace[index], [track.necklace]);
+    const isPlaying = useRecoilValue(isPlayingState);
     const diameter = active ? 20 : 10;
     const diameterLarger = diameter + diameter * 0.15;
+    const isCurrent = getCurrentStep(track.steps) % track.steps === index;
 
     /*
         Rotate step to face its position, based on its index. Then move it forward, and rotate back.
@@ -47,7 +48,7 @@ const Step: FC<StepProps> = ({ track, radius, index }) => {
         },
     };
 
-    const animate = isPlaying && current ? "current" : "normal";
+    const animate = isPlaying && isCurrent ? "current" : "normal";
 
     const colours = {
         light: `bg-${track.colour}-light`,
@@ -56,9 +57,9 @@ const Step: FC<StepProps> = ({ track, radius, index }) => {
     };
 
     const className = classNames("rounded-full absolute top top-1/2 left-1/2 transition-colors", {
-        [colours.medium]: active && !(isPlaying && current),
+        [colours.medium]: active && !(isPlaying && isCurrent),
         [colours.dark]: !active,
-        [colours.light]: isPlaying && current,
+        [colours.light]: isPlaying && isCurrent,
     });
 
     return (

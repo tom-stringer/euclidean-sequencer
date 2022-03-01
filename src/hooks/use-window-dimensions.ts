@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 
 function getWindowDimensions() {
-    const { innerWidth: width, innerHeight: height } = window;
     return {
-        width,
-        height,
+        innerWidth: window.innerWidth,
+        innerHeight: window.innerHeight,
+        clientWidth: document.documentElement?.clientWidth,
+        clientHeight: document.documentElement?.clientHeight,
     };
+}
+
+function isPageScrolling() {
+    return document.body.scrollHeight > document.body.clientHeight;
 }
 
 /**

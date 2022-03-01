@@ -2,16 +2,6 @@ import { atom, atomFamily } from "recoil";
 import { createTrack } from "../factories/track-factory";
 import { Instruments, Track } from "../types/rhythm-types";
 
-export const rhythmLengthState = atom<number>({
-    key: "rhythmLength",
-    default: 8, // TODO: change this after testing
-});
-
-export const currentStepState = atom<number>({
-    key: "currentStep",
-    default: 0,
-});
-
 export const trackIdsState = atom<string[]>({
     key: "trackIds",
     default: ["test"], // TODO: change this after testing

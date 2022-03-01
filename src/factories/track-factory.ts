@@ -20,5 +20,6 @@ export function createTrack(
         rotation,
         volume: 1.0,
         colour: colour ? colour : Colours.PURPLE,
+        currentStep: 0,
     };
 }

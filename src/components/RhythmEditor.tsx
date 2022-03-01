@@ -1,27 +1,20 @@
-import { FC, useEffect, useRef, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { useStepDelay } from "../hooks/rhythm-hooks";
+import { FC, useEffect, useMemo, useRef } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { useStartRhythm, useStopRhythm } from "../hooks/rhythm-hooks";
 import useWindowDimensions from "../hooks/use-window-dimensions";
-import { isDebuggingState } from "../recoil/debug-state";
-import { currentStepState, isPlayingState, rhythmLengthState, trackIdsState } from "../recoil/rhythm-state";
+import { isPlayingState, trackIdsState } from "../recoil/rhythm-state";
 import AddTrackButton from "./AddTrackButton";
 import RhythmControls from "./RhythmControls";
 import TrackCircle from "./TrackCircle";
 import TrackControls from "./TrackControls";
 
 const RhythmEditor: FC = () => {
-    const [rhythmLength, setRhythmLength] = useRecoilState(rhythmLengthState);
-    const [currentStep, setCurrentStep] = useRecoilState(currentStepState);
     const [isPlaying] = useRecoilState(isPlayingState);
     const trackIds = useRecoilValue(trackIdsState);
-    const stepDelay = useStepDelay();
     const circlesContainer = useRef<HTMLDivElement>(null);
-    const [circlesContainerHeight, setCirclesContainerHeight] = useState<number | undefined>(
-        circlesContainer.current?.offsetWidth
-    );
-    const isDebugging = useRecoilValue(isDebuggingState);
-    const setPlaying = useSetRecoilState(isPlayingState);
-    const { width } = useWindowDimensions();
+    const { innerWidth, clientWidth } = useWindowDimensions();
+    const startRhythm = useStartRhythm();
+    const stopRhythm = useStopRhythm();
 
     useEffect(() => {
         window.addEventListener("keypress", handleSpacebar);
@@ -29,37 +22,27 @@ const RhythmEditor: FC = () => {
         return () => {
             window.removeEventListener("keypress", handleSpacebar);
         };
-    }, []);
+    }, [isPlaying]);
 
-    useEffect(() => {
-        if (isPlaying) {
-            setTimeout(() => {
-                setCurrentStep((current) => (current + 1) % rhythmLength);
-            }, stepDelay);
-        } else {
-            setCurrentStep(0);
-        }
-    }, [isPlaying, currentStep]);
-
-    useEffect(() => {
-        setCirclesContainerHeight(circlesContainer.current?.offsetWidth);
-    }, [circlesContainer.current?.offsetWidth, width]);
+    const circlesContainerHeight = useMemo(
+        () => circlesContainer.current?.offsetWidth,
+        [circlesContainer.current?.offsetWidth, innerWidth, clientWidth]
+    );
 
     function handleSpacebar(event: KeyboardEvent) {
         if (event.key === " ") {
             event.preventDefault();
-            setPlaying((current) => !current);
+            if (isPlaying) {
+                stopRhythm();
+            } else {
+                startRhythm();
+            }
         }
     }
 
     return (
         <>
             <RhythmControls />
-            {isDebugging && (
-                <p>
-                    {currentStep}/{rhythmLength}
-                </p>
-            )}
             <div
                 className="w-full flex justify-center relative my-4"
                 ref={circlesContainer}

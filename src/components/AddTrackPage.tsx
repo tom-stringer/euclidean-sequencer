@@ -1,7 +1,7 @@
 import { Howl } from "howler";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilCallback, useSetRecoilState } from "recoil";
+import { useRecoilCallback } from "recoil";
 import { v4 } from "uuid";
 import { createTrack } from "../factories/track-factory";
 import { trackIdsState, trackState } from "../recoil/rhythm-state";
@@ -14,19 +14,17 @@ import PlusIcon from "./icons/PlusIcon";
 
 const AddTrackPage: FC = () => {
     const navigate = useNavigate();
-    const setTrackIds = useSetRecoilState(trackIdsState);
-
-    const addTrackControls = useRecoilCallback(
-        ({ set }) =>
-            (id: string) =>
-                set(trackControlsState(id), TrackControlStates.CLOSED),
-        []
-    );
 
     const addTrack = useRecoilCallback(
-        ({ set }) =>
-            (id: string, instrument: Instrument) =>
-                set(trackState(id), createTrack(id, instrument.key, 8, 4)),
+        ({ set, snapshot }) =>
+            async (instrument: Instrument) => {
+                const id = v4();
+                set(trackState(id), createTrack(id, instrument.key, 8, 4));
+                set(trackControlsState(id), TrackControlStates.CLOSED);
+
+                const trackIds = await snapshot.getPromise(trackIdsState);
+                set(trackIdsState, [...trackIds, id]);
+            },
         []
     );
 
@@ -37,13 +35,7 @@ const AddTrackPage: FC = () => {
 
     function handleAddTrack(event: React.MouseEvent<HTMLButtonElement, MouseEvent>, instrument: Instrument) {
         event.stopPropagation();
-
-        const id = v4();
-        addTrack(id, instrument);
-        addTrackControls(id);
-
-        setTrackIds((value) => [...value, id]);
-
+        addTrack(instrument);
         navigate("/");
     }
 

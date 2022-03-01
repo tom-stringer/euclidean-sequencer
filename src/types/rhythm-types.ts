@@ -11,7 +11,7 @@ export enum Instruments {
 export interface Instrument {
     key: Instruments;
     name: string;
-    src: string | string[];
+    src: string;
 }
 
 export interface Track {
@@ -23,6 +23,7 @@ export interface Track {
     rotation: number;
     volume: number;
     colour: Colours;
+    currentStep: number;
 }
 
 export interface Rhythm {

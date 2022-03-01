@@ -1,10 +1,9 @@
 import { getPattern } from "euclidean-rhythms";
-import { Howl } from "howler";
-import { FC, useEffect, useState } from "react";
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { FC, useEffect, useMemo } from "react";
+import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
+import { Player, Sequence } from "tone";
 import env from "../env";
-import { useStopRhythm } from "../hooks/rhythm-hooks";
-import { currentStepState, isPlayingState, trackIdsState, trackState } from "../recoil/rhythm-state";
+import { isPlayingState, trackIdsState, trackState } from "../recoil/rhythm-state";
 import { trackControlsState, TrackControlStates } from "../recoil/ui-state";
 import { instruments } from "../utils/instruments";
 import { rotateNecklace } from "../utils/rhythm-utils";
@@ -24,12 +23,27 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     const removeTrack = useResetRecoilState(trackState(id));
     const [uiState, setUiState] = useRecoilState(trackControlsState(id));
     const removeUiState = useResetRecoilState(trackControlsState(id));
-    const [howl, setHowl] = useState(new Howl({ src: instruments[track.instrument].src }));
     const instrumentName = instruments[track.instrument].name;
-    const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
-    const [currentStep, setCurrentStep] = useRecoilState(currentStepState);
     const setTrackIds = useSetRecoilState(trackIdsState);
-    const stopRhythm = useStopRhythm();
+    const isPlaying = useRecoilValue(isPlayingState);
+    const player = useMemo(() => new Player(instruments[track.instrument].src).toDestination(), [track.instrument]);
+
+    useEffect(() => {
+        const seq = new Sequence(
+            (time, note) => {
+                if (note) {
+                    player.start(time);
+                }
+                setTrack((value) => ({ ...value, currentStep: (value.currentStep + 1) % value.steps }));
+            },
+            track.necklace,
+            "16n"
+        ).start(0);
+
+        return () => {
+            seq.dispose();
+        };
+    }, [track.necklace]);
 
     useEffect(() => {
         setTrack((value) => {
@@ -42,8 +56,6 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     }, [track.pulses, track.steps, track.rotation]);
 
     useEffect(() => {
-        stopRhythm();
-
         if (track.pulses > track.steps) {
             handleChange(track.steps, "pulses");
         }
@@ -53,14 +65,10 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     }, [track.steps]);
 
     useEffect(() => {
-        if (isPlaying && track.necklace[currentStep % track.steps]) {
-            howl.play();
+        if (!isPlaying) {
+            setTrack((value) => ({ ...value, currentStep: 0 }));
         }
-    }, [isPlaying, currentStep]);
-
-    useEffect(() => {
-        setHowl(new Howl({ src: instruments[track.instrument].src }));
-    }, [track.instrument]);
+    }, [isPlaying]);
 
     function handleClickChevron() {
         setUiState((previousState) => {

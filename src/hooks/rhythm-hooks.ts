@@ -1,18 +1,26 @@
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { currentStepState, isPlayingState, tempoState } from "../recoil/rhythm-state";
-import { getStepDelay } from "../utils/rhythm-utils";
+import { useSetRecoilState } from "recoil";
+import { Transport } from "tone";
+import { isPlayingState } from "../recoil/rhythm-state";
+import { getStepDelayMillis } from "../utils/rhythm-utils";
 
 export function useStepDelay(): number {
-    const tempo = useRecoilValue(tempoState);
-    return getStepDelay(tempo);
+    return getStepDelayMillis();
+}
+
+export function useStartRhythm() {
+    const setPlaying = useSetRecoilState(isPlayingState);
+
+    return () => {
+        Transport.start();
+        setPlaying(true);
+    };
 }
 
 export function useStopRhythm() {
     const setPlaying = useSetRecoilState(isPlayingState);
-    const setCurrentStep = useSetRecoilState(currentStepState);
 
-    return function () {
+    return () => {
+        Transport.stop();
         setPlaying(false);
-        setCurrentStep(0);
     };
 }
