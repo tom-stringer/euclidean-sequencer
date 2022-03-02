@@ -1,7 +1,6 @@
-import { FC, useEffect, useMemo, useRef } from "react";
+import { FC, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useStartRhythm, useStopRhythm } from "../hooks/rhythm-hooks";
-import useWindowDimensions from "../hooks/use-window-dimensions";
 import { isPlayingState, trackIdsState } from "../recoil/rhythm-state";
 import AddTrackButton from "./AddTrackButton";
 import RhythmControls from "./RhythmControls";
@@ -11,8 +10,6 @@ import TrackControls from "./TrackControls";
 const RhythmEditor: FC = () => {
     const [isPlaying] = useRecoilState(isPlayingState);
     const trackIds = useRecoilValue(trackIdsState);
-    const circlesContainer = useRef<HTMLDivElement>(null);
-    const { innerWidth, clientWidth } = useWindowDimensions();
     const startRhythm = useStartRhythm();
     const stopRhythm = useStopRhythm();
 
@@ -23,11 +20,6 @@ const RhythmEditor: FC = () => {
             window.removeEventListener("keypress", handleSpacebar);
         };
     }, [isPlaying]);
-
-    const circlesContainerHeight = useMemo(
-        () => circlesContainer.current?.offsetWidth,
-        [circlesContainer.current?.offsetWidth, innerWidth, clientWidth]
-    );
 
     function handleSpacebar(event: KeyboardEvent) {
         if (event.key === " ") {
@@ -43,10 +35,7 @@ const RhythmEditor: FC = () => {
     return (
         <>
             <RhythmControls />
-            <div
-                className="w-full flex justify-center relative my-4"
-                ref={circlesContainer}
-                style={{ height: circlesContainerHeight }}>
+            <div className="w-full flex justify-center relative my-4 pt-[100%]">
                 {trackIds.map((id, i) => (
                     <TrackCircle key={id} id={id} index={i} />
                 ))}

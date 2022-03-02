@@ -10,7 +10,7 @@ const App: FC = () => {
     const [isDebugging, setDebugging] = useRecoilState(isDebuggingState);
 
     return (
-        <main className="text-white bg-gray-900 p-4 h-full overflow-auto">
+        <main className="text-white bg-gray-900 p-4 h-full overflow-y-auto">
             <Routes>
                 <Route path="/" element={<RhythmEditor />} />
                 <Route path="/add" element={<AddTrackPage />} />
