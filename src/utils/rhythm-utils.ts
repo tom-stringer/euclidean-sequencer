@@ -18,7 +18,3 @@ export function getStepDelayMillis() {
 export function getStepDelaySeconds() {
     return 60 / (Transport.bpm.value << 2);
 }
-
-export function getCurrentStep(length: number) {
-    return Math.floor(Transport.seconds / getStepDelaySeconds()) % length;
-}

@@ -16,7 +16,7 @@ const RhythmControls: FC = () => {
 
     useEffect(() => {
         Transport.bpm.value = tempo;
-    }, []);
+    }, [tempo]);
 
     function handleClickPlay() {
         if (isPlaying) {

@@ -1,10 +1,9 @@
 import classNames from "classnames";
 import { motion } from "framer-motion";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo } from "react";
 import { useRecoilValue } from "recoil";
-import { Transport } from "tone";
+import { useCurrentStep } from "../hooks/rhythm-hooks";
 import { isPlayingState, trackState } from "../recoil/rhythm-state";
-import { getCurrentStep } from "../utils/rhythm-utils";
 
 interface StepProps {
     id: string;
@@ -20,7 +19,8 @@ const Step: FC<StepProps> = ({ id, radius, index }) => {
     const isPlaying = useRecoilValue(isPlayingState);
     const diameter = active ? 20 : 10;
     const diameterLarger = diameter + diameter * 0.15;
-    const isCurrent = getCurrentStep(track.steps) % track.steps === index;
+    const currentStep = useCurrentStep(id);
+    const isCurrent = currentStep % track.steps === index;
 
     /*
         Rotate step to face its position, based on its index. Then move it forward, and rotate back.
