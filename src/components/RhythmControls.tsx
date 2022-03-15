@@ -36,7 +36,7 @@ const RhythmControls: FC = () => {
 
     return (
         <div className="flex justify-center my-4">
-            <div className="flex justify-evenly items-center bg-gray-800 rounded-lg px-5 py-3">
+            <div className="flex justify-around items-center bg-gray-800 rounded-lg px-3 py-3">
                 <button onClick={() => handleClickPlay()} className="flex justify-center mx-4">
                     {!isPlaying ? (
                         <PlayIcon className="fill-white w-5 h-5" />
@@ -51,10 +51,10 @@ const RhythmControls: FC = () => {
                     max={env.TEMPO_MAX}
                     onChange={(value) => handleTempoChange(value)}
                     onIncrement={(change) => handleTempoIncrement(change)}
-                    className="mx-4"
+                    className=""
                 />
 
-                <p className="text-lg mx-4 w-20">
+                <p className="text-lg text-center w-20">
                     {tempo} <span className="text-muted text-sm">BPM</span>
                 </p>
             </div>

@@ -47,7 +47,7 @@ const KnobGroup: FC<KnobGroupProps> = ({
             {title && <h1 className="text-muted text-sm mb-2">{title}</h1>}
 
             {/* Buttons and knob. */}
-            <div className="flex justify-between items-center mb-2">
+            <div className="flex justify-between items-center">
                 <button onClick={() => handleIncrement(-step)} className="group flex justify-center mx-1">
                     <MinusIcon className="stroke-muted group-hover:stroke-muted-light w-6 h-6" />
                 </button>
@@ -58,7 +58,7 @@ const KnobGroup: FC<KnobGroupProps> = ({
             </div>
 
             {/* Value. */}
-            {showValue && <h1 className="text-muted text-lg">{value}</h1>}
+            {showValue && <h1 className="text-muted text-lg mt-2">{value}</h1>}
         </div>
     );
 };
