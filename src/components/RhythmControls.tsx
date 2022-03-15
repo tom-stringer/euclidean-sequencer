@@ -1,18 +1,17 @@
 import { FC, useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { Transport } from "tone";
 import env from "../env";
-import { useStartRhythm, useStopRhythm } from "../hooks/rhythm-hooks";
+import useRhythmControls from "../hooks/use-rhythm-controls";
 import { isPlayingState, tempoState } from "../recoil/rhythm-state";
 import PauseIcon from "./icons/PauseIcon";
 import PlayIcon from "./icons/PlayIcon";
 import KnobGroup from "./input/KnobGroup";
 
 const RhythmControls: FC = () => {
-    const [isPlaying, setPlaying] = useRecoilState(isPlayingState);
+    const isPlaying = useRecoilValue(isPlayingState);
     const [tempo, setTempo] = useRecoilState(tempoState);
-    const startRhythm = useStartRhythm();
-    const stopRhythm = useStopRhythm();
+    const { startRhythm, stopRhythm } = useRhythmControls();
 
     useEffect(() => {
         Transport.bpm.value = tempo;
@@ -51,7 +50,6 @@ const RhythmControls: FC = () => {
                     max={env.TEMPO_MAX}
                     onChange={(value) => handleTempoChange(value)}
                     onIncrement={(change) => handleTempoIncrement(change)}
-                    className=""
                 />
 
                 <p className="text-lg text-center w-20">

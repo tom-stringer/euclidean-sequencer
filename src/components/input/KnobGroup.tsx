@@ -49,11 +49,11 @@ const KnobGroup: FC<KnobGroupProps> = ({
             {/* Buttons and knob. */}
             <div className="flex justify-between items-center">
                 <button onClick={() => handleIncrement(-step)} className="group flex justify-center mx-1">
-                    <MinusIcon className="stroke-muted group-hover:stroke-muted-light w-6 h-6" />
+                    <MinusIcon className="stroke-muted group-hover:stroke-muted-light w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
                 <Knob min={min} max={max} value={value} onChange={onChange} colour={colour} />
                 <button onClick={() => handleIncrement(step)} className="group flex justify-center mx-1">
-                    <PlusIcon className="stroke-muted group-hover:stroke-muted-light w-6 h-6" />
+                    <PlusIcon className="stroke-muted group-hover:stroke-muted-light w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
             </div>
 

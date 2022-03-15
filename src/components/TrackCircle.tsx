@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { useResizeDetector } from "react-resize-detector";
 import { useRecoilValue } from "recoil";
+import useCurrentStep from "../hooks/use-current-step";
 import { trackState } from "../recoil/rhythm-state";
 import Step from "./Step";
 
@@ -13,6 +14,11 @@ const TrackCircle: FC<TrackCircleProps> = ({ id, index }) => {
     const track = useRecoilValue(trackState(id));
     const { width, ref: circle } = useResizeDetector({ handleHeight: false });
     const radius = (width || 0) / 2;
+    const currentStep = useCurrentStep(id);
+
+    function isCurrentStep(index: number) {
+        return currentStep % track.steps === index;
+    }
 
     const circleStyle = {
         width: `${90 - index * 15}%`,
@@ -27,7 +33,10 @@ const TrackCircle: FC<TrackCircleProps> = ({ id, index }) => {
 
     return (
         <div className={circleClass} style={circleStyle} ref={circle}>
-            {radius !== 0 && track.necklace.map((_, i) => <Step id={id} key={i} radius={radius} index={i} />)}
+            {radius !== 0 &&
+                track.necklace.map((_, i) => (
+                    <Step id={id} key={i} radius={radius} index={i} isCurrent={isCurrentStep(i)} />
+                ))}
         </div>
     );
 };

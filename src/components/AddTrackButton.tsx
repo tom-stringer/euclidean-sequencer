@@ -1,11 +1,11 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import { useStopRhythm } from "../hooks/rhythm-hooks";
+import useRhythmControls from "../hooks/use-rhythm-controls";
 import PlusIcon from "./icons/PlusIcon";
 
 const AddTrackButton: FC = () => {
     const navigate = useNavigate();
-    const stopRhythm = useStopRhythm();
+    const { stopRhythm } = useRhythmControls();
 
     function handleClickAdd() {
         stopRhythm();

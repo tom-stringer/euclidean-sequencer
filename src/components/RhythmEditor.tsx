@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { useStartRhythm, useStopRhythm } from "../hooks/rhythm-hooks";
+import { useRecoilValue } from "recoil";
+import useRhythmControls from "../hooks/use-rhythm-controls";
 import { isPlayingState, trackIdsState } from "../recoil/rhythm-state";
 import AddTrackButton from "./AddTrackButton";
 import RhythmControls from "./RhythmControls";
@@ -8,10 +8,9 @@ import TrackCircle from "./TrackCircle";
 import TrackControls from "./TrackControls";
 
 const RhythmEditor: FC = () => {
-    const [isPlaying] = useRecoilState(isPlayingState);
+    const isPlaying = useRecoilValue(isPlayingState);
     const trackIds = useRecoilValue(trackIdsState);
-    const startRhythm = useStartRhythm();
-    const stopRhythm = useStopRhythm();
+    const { startRhythm, stopRhythm } = useRhythmControls();
 
     useEffect(() => {
         window.addEventListener("keypress", handleSpacebar);
