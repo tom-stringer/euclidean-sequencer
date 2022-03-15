@@ -23,6 +23,10 @@ export interface Track {
     rotation: number;
     volume: number;
     colour: Colours;
+    /**
+     * Inaccurate indicator of current step used to re-render components.
+     * Use useCurrentStep for accurate current step.
+     */
     currentStep: number;
 }
 

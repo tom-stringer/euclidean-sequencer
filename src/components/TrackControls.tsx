@@ -1,8 +1,11 @@
+import classNames from "classnames";
 import { getPattern } from "euclidean-rhythms";
+import { motion } from "framer-motion";
 import { FC, useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { Player, Sequence } from "tone";
 import env from "../env";
+import useCurrentStep from "../hooks/use-current-step";
 import { isPlayingState, trackIdsState, trackState } from "../recoil/rhythm-state";
 import { trackControlsState, TrackControlStates } from "../recoil/ui-state";
 import { instruments } from "../utils/instruments";
@@ -27,6 +30,8 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     const setTrackIds = useSetRecoilState(trackIdsState);
     const isPlaying = useRecoilValue(isPlayingState);
     const player = useMemo(() => new Player(instruments[track.instrument].src).toDestination(), [track.instrument]);
+    const currentStep = useCurrentStep(id);
+    const isActive = track.necklace[currentStep] === 1;
 
     useEffect(() => {
         const seq = new Sequence(
@@ -113,7 +118,11 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
 
     const controlsClass = `rounded-lg w-full px-4 py-2 my-4 bg-surface-1 border-t-2 border-${track.colour}-medium`;
     const chevronClass = "stroke-muted w-5 h-5 hover:stroke-muted-light";
-    const knobColour = `${track.colour}-medium`;
+    const mediumColour = `${track.colour}-medium`;
+    const indicatorClass = classNames("rounded-full w-3 h-3 transition-colors", {
+        "bg-surface-2": !isPlaying || !isActive,
+        ["bg-" + mediumColour]: isActive && isPlaying,
+    });
 
     return (
         <div className={controlsClass}>
@@ -121,7 +130,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
             <div className="flex justify-between items-center">
                 {/* Instrument name and indicator. */}
                 <div className="flex items-center">
-                    <div className="rounded-full bg-surface-2 w-3 h-3" />
+                    <div className={indicatorClass} />
                     <h1 className="ml-4 text-lg">{instrumentName}</h1>
                 </div>
 
@@ -147,7 +156,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                         onIncrement={(change) => handleIncrement(change, "steps")}
                         title="Steps"
                         showValue
-                        colour={knobColour}
+                        colour={mediumColour}
                     />
                     <KnobGroup
                         value={track.pulses}
@@ -157,7 +166,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                         onIncrement={(change) => handleIncrement(change, "pulses")}
                         title="Pulses"
                         showValue
-                        colour={knobColour}
+                        colour={mediumColour}
                     />
                     <KnobGroup
                         value={track.rotation}
@@ -167,7 +176,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                         onIncrement={(change) => handleIncrement(change, "rotation")}
                         title="Rotation"
                         showValue
-                        colour={knobColour}
+                        colour={mediumColour}
                     />
                 </div>
             )}
