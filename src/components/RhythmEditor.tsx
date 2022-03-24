@@ -4,6 +4,7 @@ import useRhythmControls from "../hooks/use-rhythm-controls";
 import { isPlayingState, trackIdsState } from "../recoil/rhythm-state";
 import AddTrackButton from "./AddTrackButton";
 import RhythmControls from "./RhythmControls";
+import ShareRhythmButton from "./ShareRhythmButton";
 import TrackCircle from "./TrackCircle";
 import TrackControls from "./TrackControls";
 
@@ -33,6 +34,7 @@ const RhythmEditor: FC = () => {
 
     return (
         <>
+            <ShareRhythmButton />
             <RhythmControls />
             <div className="w-full flex justify-center relative my-4 pt-[100%]">
                 {trackIds.map((id, i) => (

@@ -5,6 +5,7 @@ import useDebugControl from "../hooks/use-debug-control";
 import { isDebuggingState } from "../recoil/debug-state";
 import AddTrackPage from "./AddTrackPage";
 import RhythmEditor from "./RhythmEditor";
+import ToastContainer from "./ToastContainer";
 import RecoilDebugger from "./utils/RecoilDebugger";
 
 const App: FC = () => {
@@ -12,13 +13,16 @@ const App: FC = () => {
     useDebugControl();
 
     return (
-        <main className="text-white bg-gray-900 p-4 h-full overflow-y-auto">
-            <Routes>
-                <Route path="/" element={<RhythmEditor />} />
-                <Route path="/add" element={<AddTrackPage />} />
-            </Routes>
-            {isDebugging && <RecoilDebugger />}
-        </main>
+        <>
+            <main className="text-white bg-gray-900 p-4 h-full overflow-y-auto">
+                <Routes>
+                    <Route path="/" element={<RhythmEditor />} />
+                    <Route path="/add" element={<AddTrackPage />} />
+                </Routes>
+                {isDebugging && <RecoilDebugger />}
+            </main>
+            <ToastContainer />
+        </>
     );
 };
 

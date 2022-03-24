@@ -25,13 +25,12 @@ export interface Track {
     colour: Colours;
     /**
      * Inaccurate indicator of current step used to re-render components.
-     * Use useCurrentStep for accurate current step.
+     * Use useCurrentStep for accurate value.
      */
     currentStep: number;
 }
 
 export interface Rhythm {
-    tracks: Record<string, Track>;
-    length: number;
-    currentStep: number;
+    tracks: Track[];
+    tempo: number;
 }
