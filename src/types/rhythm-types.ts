@@ -29,8 +29,3 @@ export interface Track {
      */
     currentStep: number;
 }
-
-export interface Rhythm {
-    tracks: Track[];
-    tempo: number;
-}

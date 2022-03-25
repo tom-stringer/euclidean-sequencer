@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import ArrowLeftIcon from "./icons/ArrowLeftIcon";
+import ArrowLeftIcon from "../icons/ArrowLeftIcon";
 
 const NotFoundPage: FC = () => {
     const navigate = useNavigate();

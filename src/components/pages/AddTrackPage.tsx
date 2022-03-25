@@ -3,15 +3,15 @@ import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilCallback } from "recoil";
 import { v4 } from "uuid";
-import { createTrack } from "../factories/track-factory";
-import { trackIdsState, trackState } from "../recoil/rhythm-state";
-import { trackControlsState, TrackControlStates } from "../recoil/ui-state";
-import { Instrument } from "../types/rhythm-types";
-import { Colours } from "../utils/colours";
-import { instruments } from "../utils/instruments";
-import ArrowLeftIcon from "./icons/ArrowLeftIcon";
-import PlayIcon from "./icons/PlayIcon";
-import PlusIcon from "./icons/PlusIcon";
+import { createTrack } from "../../factories/track-factory";
+import { trackIdsState, trackState } from "../../recoil/rhythm-state";
+import { trackControlsState, TrackControlStates } from "../../recoil/ui-state";
+import { Instrument } from "../../types/rhythm-types";
+import { Colours } from "../../utils/colours";
+import { instruments } from "../../utils/instruments";
+import ArrowLeftIcon from "../icons/ArrowLeftIcon";
+import PlayIcon from "../icons/PlayIcon";
+import PlusIcon from "../icons/PlusIcon";
 
 const AddTrackPage: FC = () => {
     const navigate = useNavigate();

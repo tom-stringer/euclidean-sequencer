@@ -1,9 +1,9 @@
 import { useRecoilCallback } from "recoil";
 import { tempoState, trackIdsState, trackState } from "../recoil/rhythm-state";
-import { Rhythm } from "../types/rhythm-types";
+import RhythmDTO from "../types/dto/rhythm-dto";
 
 export default function useGetRhythm() {
-    const getRhythm: () => Promise<Rhythm> = useRecoilCallback(({ snapshot }) => async () => {
+    const getRhythm: () => Promise<RhythmDTO> = useRecoilCallback(({ snapshot }) => async () => {
         const trackIds = await snapshot.getPromise(trackIdsState);
         const tracks = [];
 

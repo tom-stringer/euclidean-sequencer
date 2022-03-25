@@ -1,14 +1,14 @@
 import { FC, useEffect } from "react";
 import { useRecoilValue } from "recoil";
-import useRhythmControls from "../hooks/use-rhythm-controls";
-import { isPlayingState, trackIdsState } from "../recoil/rhythm-state";
-import AddTrackButton from "./AddTrackButton";
-import RhythmControls from "./RhythmControls";
-import ShareRhythmButton from "./ShareRhythmButton";
-import TrackCircle from "./TrackCircle";
-import TrackControls from "./TrackControls";
+import useRhythmControls from "../../hooks/use-rhythm-controls";
+import { isPlayingState, trackIdsState } from "../../recoil/rhythm-state";
+import AddTrackButton from "../AddTrackButton";
+import RhythmControls from "../RhythmControls";
+import ShareRhythmButton from "../ShareRhythmButton";
+import TrackCircle from "../TrackCircle";
+import TrackControls from "../TrackControls";
 
-const RhythmEditor: FC = () => {
+const EditRhythmPage: FC = () => {
     const isPlaying = useRecoilValue(isPlayingState);
     const trackIds = useRecoilValue(trackIdsState);
     const { startRhythm, stopRhythm } = useRhythmControls();
@@ -51,4 +51,4 @@ const RhythmEditor: FC = () => {
     );
 };
 
-export default RhythmEditor;
+export default EditRhythmPage;
