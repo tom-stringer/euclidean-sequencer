@@ -4,6 +4,7 @@ import { useRecoilValue } from "recoil";
 import useDebugControl from "../hooks/use-debug-control";
 import { isDebuggingState } from "../recoil/debug-state";
 import AddTrackPage from "./AddTrackPage";
+import NotFoundPage from "./NotFoundPage";
 import RhythmEditor from "./RhythmEditor";
 import ToastContainer from "./ToastContainer";
 import RecoilDebugger from "./utils/RecoilDebugger";
@@ -18,6 +19,7 @@ const App: FC = () => {
                 <Routes>
                     <Route path="/" element={<RhythmEditor />} />
                     <Route path="/add" element={<AddTrackPage />} />
+                    <Route path="*" element={<NotFoundPage />} />
                 </Routes>
                 {isDebugging && <RecoilDebugger />}
             </main>
