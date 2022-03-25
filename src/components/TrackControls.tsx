@@ -1,11 +1,8 @@
-import classNames from "classnames";
 import { getPattern } from "euclidean-rhythms";
-import { motion } from "framer-motion";
 import { FC, useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { Player, Sequence } from "tone";
 import env from "../env";
-import useCurrentStep from "../hooks/use-current-step";
 import { isPlayingState, trackIdsState, trackState } from "../recoil/rhythm-state";
 import { trackControlsState, TrackControlStates } from "../recoil/ui-state";
 import { instruments } from "../utils/instruments";
@@ -14,6 +11,7 @@ import ChevronDownIcon from "./icons/ChevronDownIcon";
 import ChevronUpIcon from "./icons/ChevronUpIcon";
 import CloseIcon from "./icons/CloseIcon";
 import KnobGroup from "./input/KnobGroup";
+import TrackIndicator from "./TrackIndicator";
 
 interface TrackControlsProps {
     id: string;
@@ -26,12 +24,9 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     const removeTrack = useResetRecoilState(trackState(id));
     const [uiState, setUiState] = useRecoilState(trackControlsState(id));
     const removeUiState = useResetRecoilState(trackControlsState(id));
-    const instrumentName = instruments[track.instrument].name;
     const setTrackIds = useSetRecoilState(trackIdsState);
     const isPlaying = useRecoilValue(isPlayingState);
     const player = useMemo(() => new Player(instruments[track.instrument].src).toDestination(), [track.instrument]);
-    const currentStep = useCurrentStep(id);
-    const isActive = track.necklace[currentStep] === 1;
 
     useEffect(() => {
         const seq = new Sequence(
@@ -39,7 +34,6 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                 if (note) {
                     player.start(time);
                 }
-                setTrack((value) => ({ ...value, currentStep: (value.currentStep + 1) % value.steps }));
             },
             track.necklace,
             "16n"
@@ -71,7 +65,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
 
     useEffect(() => {
         if (!isPlaying) {
-            setTrack((value) => ({ ...value, currentStep: 0 }));
+            setTrack((value) => ({ ...value }));
         }
     }, [isPlaying]);
 
@@ -119,20 +113,13 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     const controlsClass = `rounded-lg w-full px-4 py-2 my-4 bg-surface-1 border-t-2 border-${track.colour}-medium`;
     const chevronClass = "stroke-muted w-5 h-5 hover:stroke-muted-light";
     const mediumColour = `${track.colour}-medium`;
-    const indicatorClass = classNames("rounded-full w-3 h-3 transition-colors", {
-        "bg-surface-2": !isPlaying || !isActive,
-        ["bg-" + mediumColour]: isActive && isPlaying,
-    });
 
     return (
         <div className={controlsClass}>
             {/* Top bar: name, chevron, close. */}
             <div className="flex justify-between items-center">
                 {/* Instrument name and indicator. */}
-                <div className="flex items-center">
-                    <div className={indicatorClass} />
-                    <h1 className="ml-4 text-lg">{instrumentName}</h1>
-                </div>
+                <TrackIndicator id={id} />
 
                 {/* Chevron and close. */}
                 <div className="flex items-center">

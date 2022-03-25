@@ -1,4 +1,4 @@
-import { Track } from "../rhythm-types";
+import Track from "../track";
 
 export default interface RhythmDTO {
     tracks: Track[];

@@ -1,5 +1,6 @@
 import { getPattern } from "euclidean-rhythms";
-import { Instruments, Track } from "../types/rhythm-types";
+import { Instruments } from "../types/rhythm-types";
+import Track from "../types/track";
 import { Colours } from "../utils/colours";
 import { rotateNecklace } from "../utils/rhythm-utils";
 
@@ -20,6 +21,5 @@ export function createTrack(
         rotation,
         volume: 1.0,
         colour,
-        currentStep: 0,
     };
 }
