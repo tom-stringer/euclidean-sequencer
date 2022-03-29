@@ -34,7 +34,7 @@ const RhythmControls: FC = () => {
     }
 
     return (
-        <div className="flex justify-center my-4">
+        <div className="flex justify-center">
             <div className="flex justify-around items-center bg-gray-800 rounded-lg px-3 py-3">
                 <button onClick={() => handleClickPlay()} className="flex justify-center mx-4">
                     {!isPlaying ? (

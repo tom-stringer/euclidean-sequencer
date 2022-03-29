@@ -56,7 +56,7 @@ const AddTrackPage: FC = () => {
     }
 
     return (
-        <div className="flex flex-col gap-y-4">
+        <>
             <header className="flex items-center">
                 <button className="group w-10 h-10 p-2" onClick={() => navigate("/")}>
                     <ArrowLeftIcon className="w-full h-full stroke-muted-light group-hover:stroke-white" />
@@ -82,7 +82,7 @@ const AddTrackPage: FC = () => {
                     </button>
                 </button>
             ))}
-        </div>
+        </>
     );
 };
 

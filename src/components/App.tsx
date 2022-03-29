@@ -8,6 +8,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import AddTrackPage from "./pages/AddTrackPage";
 import ToastContainer from "./toasts/ToastContainer";
 import RecoilDebugger from "./utils/RecoilDebugger";
+import Header from "./Header";
 
 const App: FC = () => {
     const isDebugging = useRecoilValue(isDebuggingState);
@@ -15,7 +16,8 @@ const App: FC = () => {
 
     return (
         <>
-            <main className="text-white bg-gray-900 p-4 h-full overflow-y-auto">
+            <main className="text-white bg-background px-4 pt-14 pb-4 min-h-full flex flex-col gap-y-4">
+                <Header />
                 <Routes>
                     <Route path="/" element={<EditRhythmPage />} />
                     <Route path="/add" element={<AddTrackPage />} />

@@ -110,7 +110,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
         }));
     }
 
-    const controlsClass = `rounded-lg w-full px-4 py-2 my-4 bg-surface-1 border-t-2 border-${track.colour}-medium`;
+    const controlsClass = `rounded-lg w-full px-4 py-2 bg-surface-1 border-t-2 border-${track.colour}-medium`;
     const chevronClass = "stroke-muted w-5 h-5 hover:stroke-muted-light";
     const mediumColour = `${track.colour}-medium`;
 

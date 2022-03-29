@@ -49,7 +49,7 @@ const EditRhythmPage: FC = () => {
             <ShareRhythmButton />
             <RhythmControls />
             {trackIds.length > 0 ? (
-                <div className="w-full flex justify-center relative my-4 pt-[100%]">
+                <div className="w-full flex justify-center relative pt-[100%]">
                     {trackIds.map((id, i) => (
                         <TrackCircle key={id} id={id} index={i} />
                     ))}
