@@ -14,12 +14,13 @@ const ShareRhythmButton: FC = () => {
 
         const shareData: ShareData = {
             url,
+            title: "Hello TItle",
             text: "Hello World!",
         };
 
         if (navigator.share !== undefined) {
             try {
-                navigator.share(shareData);
+                await navigator.share(shareData);
             } catch (error) {
                 console.log("Share defined but error: ", error);
             }
