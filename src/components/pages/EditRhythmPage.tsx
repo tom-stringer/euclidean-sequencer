@@ -5,7 +5,6 @@ import useRhythmControls from "../../hooks/use-rhythm-controls";
 import { isPlayingState, metronomeState, trackIdsState } from "../../recoil/rhythm-state";
 import AddTrackButton from "../AddTrackButton";
 import RhythmControls from "../RhythmControls";
-import ShareRhythmButton from "../ShareRhythmButton";
 import TrackCircle from "../TrackCircle";
 import TrackControls from "../TrackControls";
 
@@ -14,14 +13,15 @@ const EditRhythmPage: FC = () => {
     const trackIds = useRecoilValue(trackIdsState);
     const setMetronome = useSetRecoilState(metronomeState);
     const { startRhythm, stopRhythm } = useRhythmControls();
+    const hasTracks = trackIds.length > 0;
 
     useEffect(() => {
-        window.addEventListener("keypress", handleSpacebar);
+        window.addEventListener("keypress", handlePlayPauseHotkey);
 
         return () => {
-            window.removeEventListener("keypress", handleSpacebar);
+            window.removeEventListener("keypress", handlePlayPauseHotkey);
         };
-    }, []);
+    }, [isPlaying]);
 
     useEffect(() => {
         const loop = new Loop(() => {
@@ -33,8 +33,8 @@ const EditRhythmPage: FC = () => {
         };
     }, []);
 
-    function handleSpacebar(event: KeyboardEvent) {
-        if (event.key === " ") {
+    function handlePlayPauseHotkey(event: KeyboardEvent) {
+        if (event.key === "p") {
             event.preventDefault();
             if (isPlaying) {
                 stopRhythm();
@@ -46,27 +46,35 @@ const EditRhythmPage: FC = () => {
 
     return (
         <>
-            {trackIds.length > 0 ? (
+            {hasTracks ? (
                 <div className="w-full flex justify-center relative pt-[100%] -mt-4 -mb-2">
                     {trackIds.map((id, i) => (
                         <TrackCircle key={id} id={id} index={i} />
                     ))}
                 </div>
             ) : (
-                <div>
-                    <h1>No tracks</h1>
-                    <p>Press the button below to add a track to your rhythm.</p>
+                <div className="flex justify-center items-center grow">
+                    <div className="flex flex-col gap-y-2">
+                        <h1 className="text-2xl">Get started.</h1>
+                        <p className="text-muted">Press below to add a track to your rhythm.</p>
+                        <div className="flex justify-center mt-4">
+                            <AddTrackButton />
+                        </div>
+                    </div>
                 </div>
             )}
 
-            <RhythmControls />
+            {hasTracks && <RhythmControls />}
 
             {trackIds.map((id) => (
                 <TrackControls key={id} id={id} />
             ))}
-            <div className="flex justify-center">
-                <AddTrackButton />
-            </div>
+
+            {hasTracks && (
+                <div className="flex justify-center">
+                    <AddTrackButton />
+                </div>
+            )}
         </>
     );
 };

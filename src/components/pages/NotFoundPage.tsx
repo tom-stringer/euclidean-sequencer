@@ -17,7 +17,7 @@ const NotFoundPage: FC = () => {
             <div className="flex justify-center items-center grow">
                 <div className="flex flex-col gap-y-2">
                     <h1 className="text-2xl">Oops! Page not found.</h1>
-                    <p className="text-muted">Press the back button above to return to your rhythm.</p>{" "}
+                    <p className="text-muted">Press the back button above to return to your rhythm.</p>
                 </div>
             </div>
         </>
