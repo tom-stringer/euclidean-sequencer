@@ -47,11 +47,20 @@ const EditRhythmPage: FC = () => {
     return (
         <>
             {hasTracks ? (
-                <div className="w-full flex justify-center relative pt-[100%] -mt-4 -mb-2">
-                    {trackIds.map((id, i) => (
-                        <TrackCircle key={id} id={id} index={i} />
+                <>
+                    <div className="w-full flex justify-center relative pt-[100%] -mt-4 -mb-2">
+                        {trackIds.map((id, i) => (
+                            <TrackCircle key={id} id={id} index={i} />
+                        ))}
+                    </div>
+                    <RhythmControls />
+                    {trackIds.map((id) => (
+                        <TrackControls key={id} id={id} />
                     ))}
-                </div>
+                    <div className="flex justify-center">
+                        <AddTrackButton />
+                    </div>
+                </>
             ) : (
                 <div className="flex justify-center items-center grow">
                     <div className="flex flex-col gap-y-2">
@@ -61,18 +70,6 @@ const EditRhythmPage: FC = () => {
                             <AddTrackButton />
                         </div>
                     </div>
-                </div>
-            )}
-
-            {hasTracks && <RhythmControls />}
-
-            {trackIds.map((id) => (
-                <TrackControls key={id} id={id} />
-            ))}
-
-            {hasTracks && (
-                <div className="flex justify-center">
-                    <AddTrackButton />
                 </div>
             )}
         </>

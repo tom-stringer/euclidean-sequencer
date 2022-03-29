@@ -6,12 +6,12 @@ import { Colours } from "../utils/colours";
 
 export const trackIdsState = atom<string[]>({
     key: "trackIds",
-    default: ["test"], // TODO: change this after testing
+    default: [],
 });
 
 export const trackState = atomFamily<Track, string>({
     key: "track",
-    default: createTrack("test", Instruments.KICK, 8, 3, Colours.PURPLE), // TODO: change this after testing
+    default: createTrack("default", Instruments.KICK, 8, 4, Colours.GREEN),
 });
 
 export const isPlayingState = atom<boolean>({

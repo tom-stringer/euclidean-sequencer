@@ -26,23 +26,6 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
     const removeUiState = useResetRecoilState(trackControlsState(id));
     const setTrackIds = useSetRecoilState(trackIdsState);
     const isPlaying = useRecoilValue(isPlayingState);
-    const player = useMemo(() => new Player(instruments[track.instrument].src).toDestination(), [track.instrument]);
-
-    useEffect(() => {
-        const seq = new Sequence(
-            (time, note) => {
-                if (note) {
-                    player.start(time);
-                }
-            },
-            track.necklace,
-            "16n"
-        ).start(0);
-
-        return () => {
-            seq.dispose();
-        };
-    }, [track.necklace]);
 
     useEffect(() => {
         setTrack((value) => {
