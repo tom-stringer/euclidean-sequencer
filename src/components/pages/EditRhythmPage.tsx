@@ -33,13 +33,13 @@ const EditRhythmPage: FC = () => {
         };
     }, []);
 
-    function handlePlayPauseHotkey(event: KeyboardEvent) {
+    async function handlePlayPauseHotkey(event: KeyboardEvent) {
         if (event.key === "p") {
             event.preventDefault();
             if (isPlaying) {
                 stopRhythm();
             } else {
-                startRhythm();
+                await startRhythm();
             }
         }
     }

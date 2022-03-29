@@ -1,12 +1,13 @@
 import { useSetRecoilState } from "recoil";
-import { Transport } from "tone";
+import { context, Transport } from "tone";
 import { isPlayingState } from "../recoil/rhythm-state";
 
 export default function useRhythmControls() {
     const setPlaying = useSetRecoilState(isPlayingState);
 
     return {
-        startRhythm: () => {
+        startRhythm: async () => {
+            await context.resume();
             Transport.start();
             setPlaying(true);
         },

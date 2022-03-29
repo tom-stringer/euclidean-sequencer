@@ -5,6 +5,7 @@ import { Player, Sequence } from "tone";
 import { trackState } from "../recoil/rhythm-state";
 import { instruments } from "../utils/instruments";
 import Step from "./Step";
+import { context } from "tone";
 
 interface TrackCircleProps {
     id: string;
@@ -21,7 +22,7 @@ const TrackCircle: FC<TrackCircleProps> = ({ id, index }) => {
         const seq = new Sequence(
             (time, note) => {
                 if (note) {
-                    player.start(time);
+                    player.start(context.currentTime);
                 }
             },
             track.necklace,
