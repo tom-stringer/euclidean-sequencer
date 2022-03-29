@@ -46,10 +46,8 @@ const EditRhythmPage: FC = () => {
 
     return (
         <>
-            <ShareRhythmButton />
-            <RhythmControls />
             {trackIds.length > 0 ? (
-                <div className="w-full flex justify-center relative pt-[100%]">
+                <div className="w-full flex justify-center relative pt-[100%] -mt-4 -mb-2">
                     {trackIds.map((id, i) => (
                         <TrackCircle key={id} id={id} index={i} />
                     ))}
@@ -60,6 +58,8 @@ const EditRhythmPage: FC = () => {
                     <p>Press the button below to add a track to your rhythm.</p>
                 </div>
             )}
+
+            <RhythmControls />
 
             {trackIds.map((id) => (
                 <TrackControls key={id} id={id} />

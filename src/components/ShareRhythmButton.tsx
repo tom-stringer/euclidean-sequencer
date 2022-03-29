@@ -2,6 +2,7 @@ import { FC } from "react";
 import useAddToast from "../hooks/use-add-toast";
 import useGetRhythmDTO from "../hooks/use-get-rhythm";
 import { Toasts } from "../recoil/toast-state";
+import ShareIcon from "./icons/ShareIcon";
 
 const ShareRhythmButton: FC = () => {
     const getRhythmDTO = useGetRhythmDTO();
@@ -24,7 +25,12 @@ const ShareRhythmButton: FC = () => {
         }
     }
 
-    return <button onClick={() => shareRhythm()}>Share</button>;
+    return (
+        <button className="flex justify-center items-center group gap-x-2" onClick={() => shareRhythm()}>
+            <h1 className="text-muted group-hover:text-muted-light">Share</h1>
+            <ShareIcon className="h-5 w-5 stroke-muted group-hover:stroke-muted-light" />
+        </button>
+    );
 };
 
 export default ShareRhythmButton;

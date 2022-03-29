@@ -35,12 +35,12 @@ const RhythmControls: FC = () => {
 
     return (
         <div className="flex justify-center">
-            <div className="flex justify-around items-center bg-gray-800 rounded-lg px-3 py-3">
-                <button onClick={() => handleClickPlay()} className="flex justify-center mx-4">
+            <div className="flex justify-evenly items-center bg-surface-1 rounded-lg gap-x-4 py-3 px-4">
+                <button onClick={() => handleClickPlay()} className="group flex justify-center mx-2">
                     {!isPlaying ? (
-                        <PlayIcon className="fill-white w-5 h-5" />
+                        <PlayIcon className="fill-muted group-hover:fill-muted-light w-5 h-5" />
                     ) : (
-                        <PauseIcon className="fill-white w-5 h-5" />
+                        <PauseIcon className="fill-muted group-hover:fill-muted-light w-5 h-5" />
                     )}
                 </button>
 
@@ -52,7 +52,7 @@ const RhythmControls: FC = () => {
                     onIncrement={(change) => handleTempoIncrement(change)}
                 />
 
-                <p className="text-lg text-center w-20">
+                <p className="text-lg text-center min-w-[4rem]">
                     {tempo} <span className="text-muted text-sm">BPM</span>
                 </p>
             </div>

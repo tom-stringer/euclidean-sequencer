@@ -16,7 +16,7 @@ const App: FC = () => {
 
     return (
         <>
-            <main className="text-white bg-background px-4 pt-14 pb-4 min-h-full flex flex-col gap-y-4">
+            <main className="text-white bg-background p-4 min-h-full flex flex-col gap-y-4">
                 <Header />
                 <Routes>
                     <Route path="/" element={<EditRhythmPage />} />
