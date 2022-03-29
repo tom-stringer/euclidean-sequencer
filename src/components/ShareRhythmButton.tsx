@@ -1,19 +1,32 @@
 import { FC } from "react";
 import useAddToast from "../hooks/use-add-toast";
-import useGetRhythm from "../hooks/use-get-rhythm";
+import useGetRhythmDTO from "../hooks/use-get-rhythm";
 import { Toasts } from "../recoil/toast-state";
 
 const ShareRhythmButton: FC = () => {
-    const getRhythm = useGetRhythm();
+    const getRhythmDTO = useGetRhythmDTO();
     const addToast = useAddToast();
 
     async function shareRhythm() {
-        const rhythm = await getRhythm();
-        const encodedRhythm = btoa(JSON.stringify(rhythm));
+        const rhythmDTO = await getRhythmDTO();
+        const encodedRhythm = btoa(JSON.stringify(rhythmDTO));
         const url = window.location.href + "share/" + encodedRhythm;
 
-        navigator.clipboard.writeText(url);
-        addToast(Toasts.CLIPBOARD);
+        const shareData: ShareData = {
+            url,
+            text: "Hello World!",
+        };
+
+        if (navigator.share !== undefined) {
+            try {
+                navigator.share(shareData);
+            } catch (error) {
+                console.log("Share defined but error: ", error);
+            }
+        } else {
+            navigator.clipboard.writeText(url);
+            addToast(Toasts.CLIPBOARD);
+        }
     }
 
     return <button onClick={() => shareRhythm()}>Share</button>;

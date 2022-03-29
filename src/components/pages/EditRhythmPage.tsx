@@ -15,14 +15,13 @@ const EditRhythmPage: FC = () => {
     const setMetronome = useSetRecoilState(metronomeState);
     const { startRhythm, stopRhythm } = useRhythmControls();
 
-    // TODO: Move this to a sibling component to avoid re-rendering entire page.
     useEffect(() => {
         window.addEventListener("keypress", handleSpacebar);
 
         return () => {
             window.removeEventListener("keypress", handleSpacebar);
         };
-    }, [isPlaying]);
+    }, []);
 
     useEffect(() => {
         const loop = new Loop(() => {
