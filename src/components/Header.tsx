@@ -9,7 +9,9 @@ const Header: FC = () => {
                 <span className="text-purple-medium text-2xl">.</span>
                 <span className="text-green-medium text-2xl">.</span>
             </h1>
-            <ShareRhythmButton />
+            <div className="-mt-2">
+                <ShareRhythmButton />
+            </div>
         </header>
     );
 };
