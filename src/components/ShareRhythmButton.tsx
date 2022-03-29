@@ -12,15 +12,9 @@ const ShareRhythmButton: FC = () => {
         const encodedRhythm = btoa(JSON.stringify(rhythmDTO));
         const url = window.location.href + "share/" + encodedRhythm;
 
-        const shareData: ShareData = {
-            url,
-            title: "Hello TItle",
-            text: "Hello World!",
-        };
-
         if (navigator.share !== undefined) {
             try {
-                await navigator.share(shareData);
+                await navigator.share({ url });
             } catch (error) {
                 console.log("Share defined but error: ", error);
             }
