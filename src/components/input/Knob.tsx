@@ -111,15 +111,15 @@ const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange, colour }) =>
         transform: `rotate(${rotation}deg)`,
     };
 
-    const className = classNames("h-5 w-1", { ["bg-" + colour]: colour, "bg-white": !colour });
+    const pointerClass = classNames("h-5 w-1", { ["bg-" + colour]: colour, "bg-white": !colour });
 
     return (
         <div
             ref={knob}
             onMouseDown={(event) => handleMouseDown(event)}
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-surface-2 flex justify-center cursor-grab"
+            className="w-10 h-10 xs:w-12 xs:h-12 rounded-full bg-surface-2 flex justify-center cursor-grab"
             style={style}>
-            <div className={className}></div>
+            <div className={pointerClass}></div>
         </div>
     );
 };

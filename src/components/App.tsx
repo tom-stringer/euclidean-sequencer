@@ -25,9 +25,9 @@ const App: FC = () => {
                     <Route path="/share/:data" element={<SharedRhythmPage />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
-                {isDebugging && <RecoilDebugger />}
             </main>
             <ToastContainer />
+            {isDebugging && <RecoilDebugger />}
         </>
     );
 };
