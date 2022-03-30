@@ -64,21 +64,23 @@ const SharedRhythmPage: FC = () => {
 
     return (
         <>
-            <div className="w-full flex justify-center relative pt-[100%] -mt-4 -mb-2">
-                {trackIds.map((id, i) => (
-                    <TrackCircle key={id} id={id} index={i} />
-                ))}
-            </div>
-            <div className="flex justify-center items-center grow">
-                <button
-                    onClick={handleClickPlay}
-                    className="group bg-surface-1 hover:bg-surface-2 disabled:hover:bg-surface-1 rounded-full p-4 flex justify-center items-center">
-                    {!isPlaying ? (
-                        <PlayIcon className="fill-muted group-hover:fill-muted-light w-8 h-8" />
-                    ) : (
-                        <PauseIcon className="fill-muted group-hover:fill-muted-light w-8 h-8" />
-                    )}
-                </button>
+            <div className="my-auto flex flex-col gap-y-4 xs:mx-auto xs:w-4/5 sm:w-3/5 md:w-2/5">
+                <div className="w-full flex justify-center relative pt-[100%] -mt-4 -mb-2">
+                    {trackIds.map((id, i) => (
+                        <TrackCircle key={id} id={id} index={i} />
+                    ))}
+                </div>
+                <div className="flex justify-center items-center grow">
+                    <button
+                        onClick={handleClickPlay}
+                        className="group bg-surface-1 hover:bg-surface-2 disabled:hover:bg-surface-1 rounded-full p-4 flex justify-center items-center">
+                        {!isPlaying ? (
+                            <PlayIcon className="fill-muted group-hover:fill-muted-light w-8 h-8" />
+                        ) : (
+                            <PauseIcon className="fill-muted group-hover:fill-muted-light w-8 h-8" />
+                        )}
+                    </button>
+                </div>
             </div>
         </>
     );

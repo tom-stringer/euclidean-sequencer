@@ -117,7 +117,7 @@ const Knob: FC<KnobProps> = ({ min, max, step = 1, value, onChange, colour }) =>
         <div
             ref={knob}
             onMouseDown={(event) => handleMouseDown(event)}
-            className="w-10 h-10 xs:w-12 xs:h-12 rounded-full bg-surface-2 flex justify-center cursor-grab"
+            className="w-10 h-10 rounded-full bg-surface-2 flex justify-center cursor-grab"
             style={style}>
             <div className={pointerClass}></div>
         </div>
