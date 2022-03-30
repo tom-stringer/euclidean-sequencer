@@ -117,7 +117,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
             </div>
             {/* Knob controls for steps, pulses, rotation. */}
             {uiState === TrackControlStates.OPEN && (
-                <div className="flex justify-between items-center my-4">
+                <div className="flex justify-around items-center my-4">
                     <KnobGroup
                         value={track.steps}
                         min={env.STEPS_MIN}
