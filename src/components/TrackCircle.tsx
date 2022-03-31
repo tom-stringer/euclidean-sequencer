@@ -1,28 +1,27 @@
-import { FC, useEffect, useMemo } from "react";
+import { FC, useEffect } from "react";
 import { useResizeDetector } from "react-resize-detector";
 import { useRecoilValue } from "recoil";
-import { Player, Sequence } from "tone";
+import { Sampler, Sequence } from "tone";
 import { trackState } from "../recoil/rhythm-state";
 import { instruments } from "../utils/instruments";
 import Step from "./Step";
-import { context } from "tone";
 
 interface TrackCircleProps {
     id: string;
     index: number;
+    sampler: Sampler | null;
 }
 
-const TrackCircle: FC<TrackCircleProps> = ({ id, index }) => {
+const TrackCircle: FC<TrackCircleProps> = ({ id, index, sampler }) => {
     const track = useRecoilValue(trackState(id));
     const { width, ref: circle } = useResizeDetector({ handleHeight: false });
     const radius = (width || 0) / 2;
-    const player = useMemo(() => new Player(instruments[track.instrument].src).toDestination(), [track.instrument]);
 
     useEffect(() => {
         const seq = new Sequence(
             (time, note) => {
                 if (note) {
-                    player.start(context.currentTime);
+                    sampler?.triggerAttack(instruments[track.instrument].note, time);
                 }
             },
             track.necklace,

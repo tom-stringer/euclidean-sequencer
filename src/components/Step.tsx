@@ -60,6 +60,7 @@ const Step: FC<StepProps> = ({ id, radius, index }) => {
         <motion.div
             variants={variants}
             animate={animate}
+            transition={{ duration: 0.1 }}
             initial={"hidden"}
             key={index}
             className={className}

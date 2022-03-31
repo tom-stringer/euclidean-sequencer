@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { Loop } from "tone";
+import { Draw, Loop, Sampler } from "tone";
 import useRhythmControls from "../../hooks/use-rhythm-controls";
 import { isPlayingState, metronomeState, trackIdsState } from "../../recoil/rhythm-state";
 import AddTrackButton from "../AddTrackButton";
@@ -8,7 +8,11 @@ import RhythmControls from "../RhythmControls";
 import TrackCircle from "../TrackCircle";
 import TrackControls from "../TrackControls";
 
-const EditRhythmPage: FC = () => {
+interface Props {
+    sampler: Sampler | null;
+}
+
+const EditRhythmPage: FC<Props> = ({ sampler }) => {
     const isPlaying = useRecoilValue(isPlayingState);
     const trackIds = useRecoilValue(trackIdsState);
     const setMetronome = useSetRecoilState(metronomeState);
@@ -24,8 +28,10 @@ const EditRhythmPage: FC = () => {
     }, [isPlaying]);
 
     useEffect(() => {
-        const loop = new Loop(() => {
-            setMetronome((value) => !value);
+        const loop = new Loop((time) => {
+            Draw.schedule(() => {
+                setMetronome((value) => !value);
+            }, time);
         }, "16n").start(0);
 
         return () => {
@@ -52,7 +58,7 @@ const EditRhythmPage: FC = () => {
                         <div className="md:basis-full md:my-auto flex flex-col gap-y-4">
                             <div className="w-full flex justify-center relative pt-[100%] -mt-4 -mb-2">
                                 {trackIds.map((id, i) => (
-                                    <TrackCircle key={id} id={id} index={i} />
+                                    <TrackCircle key={id} id={id} index={i} sampler={sampler} />
                                 ))}
                             </div>
                             <RhythmControls />

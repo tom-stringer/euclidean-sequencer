@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { Loop, Transport } from "tone";
+import { Loop, Sampler, Transport } from "tone";
 import useLoadRhythm from "../../hooks/use-load-rhythm";
 import useResetRhythm from "../../hooks/use-reset-rhythm";
 import useRhythmControls from "../../hooks/use-rhythm-controls";
@@ -11,7 +11,11 @@ import PauseIcon from "../icons/PauseIcon";
 import PlayIcon from "../icons/PlayIcon";
 import TrackCircle from "../TrackCircle";
 
-const SharedRhythmPage: FC = () => {
+interface Props {
+    sampler: Sampler | null;
+}
+
+const SharedRhythmPage: FC<Props> = ({ sampler }) => {
     const setMetronome = useSetRecoilState(metronomeState);
     const trackIds = useRecoilValue(trackIdsState);
     const isPlaying = useRecoilValue(isPlayingState);
@@ -67,7 +71,7 @@ const SharedRhythmPage: FC = () => {
             <div className="my-auto flex flex-col gap-y-4 xs:mx-auto xs:w-4/5 sm:w-3/5 md:w-2/5">
                 <div className="w-full flex justify-center relative pt-[100%] -mt-4 -mb-2">
                     {trackIds.map((id, i) => (
-                        <TrackCircle key={id} id={id} index={i} />
+                        <TrackCircle key={id} id={id} index={i} sampler={sampler} />
                     ))}
                 </div>
                 <div className="flex justify-center items-center grow">

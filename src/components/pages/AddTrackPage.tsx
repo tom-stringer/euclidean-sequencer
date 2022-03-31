@@ -30,7 +30,7 @@ const AddTrackPage: FC = () => {
                 }
 
                 const availableColours = Object.values(Colours).filter((colour) => !usedColours.includes(colour));
-                let colour = availableColours[0];
+                let colour = availableColours[Math.floor(Math.random() * availableColours.length)];
 
                 if (!colour) {
                     colour = Object.values(Colours)[Math.floor(Math.random() * Object.values(Colours).length)];
