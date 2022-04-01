@@ -43,7 +43,7 @@ const App: FC = () => {
                         <a
                             className="hover:text-muted hover:underline"
                             href="https://blackoctopus-sound.com/free-downloads/">
-                            Black Octopus
+                            Black Octopus Sound
                         </a>
                         .
                     </p>
