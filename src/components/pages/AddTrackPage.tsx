@@ -35,7 +35,9 @@ const AddTrackPage: FC = () => {
 
             {["Kicks", "Snares", "Hi-Hats", "Claps", "Cymbals", "808s", "Other"].map((group) => (
                 <>
-                    <h1 className="text-muted text-xl">{group}</h1>
+                    <h1 key={group} className="text-muted text-xl">
+                        {group}
+                    </h1>
                     {Object.values(instruments[group]).map((instrument) => (
                         <button
                             className="flex justify-between items-center rounded-lg bg-surface-1 hover:bg-surface-2 p-4"
