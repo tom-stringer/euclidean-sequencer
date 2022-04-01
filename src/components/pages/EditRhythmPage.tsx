@@ -53,7 +53,7 @@ const EditRhythmPage: FC<Props> = ({ sampler }) => {
     return (
         <>
             {hasTracks ? (
-                <section className="flex flex-col gap-y-4 md:gap-x-8 md:flex-row md:my-auto xs:mx-auto xs:w-4/5 sm:w-3/5 md:w-11/12">
+                <section className="flex flex-col grow gap-y-4 md:gap-x-8 md:flex-row md:my-auto xs:mx-auto xs:w-4/5 sm:w-3/5 md:w-11/12">
                     <>
                         <div className="md:basis-full md:my-auto flex flex-col gap-y-4">
                             <div className="w-full flex justify-center relative pt-[100%] -mt-4 -mb-2">
