@@ -34,7 +34,7 @@ const App: FC = () => {
                     </div>
                 )}
                 <div className="flex justify-center items-center">
-                    <p className="text-xs text-muted-dark">
+                    <p className="text-xs text-muted-dark text-center">
                         Thomas Stringer 2022. Made using{" "}
                         <a className="hover:text-muted hover:underline" href="https://basicons.xyz">
                             Basicons
