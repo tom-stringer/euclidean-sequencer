@@ -14,7 +14,7 @@ const Header: FC = () => {
     return (
         <header className="h-6 flex justify-between items-center">
             <div onClick={() => navigate("/")} className="flex items-center gap-x-2 cursor-pointer">
-                <img src="/images/logo.png" className="max-h-[1.125rem] max-w-[1.125rem]" />
+                <img src="/images/logo.png" alt="logo" className="max-h-[1.125rem] max-w-[1.125rem]" />
                 <h1 className="text-lg">Sequinse</h1>
             </div>
 

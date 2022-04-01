@@ -132,7 +132,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                         max={track.steps}
                         onChange={(value) => handleChange(value, "pulses")}
                         onIncrement={(change) => handleIncrement(change, "pulses")}
-                        title="Notes"
+                        title="Hits"
                         showValue
                         colour={mediumColour}
                     />
