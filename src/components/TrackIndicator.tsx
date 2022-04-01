@@ -3,7 +3,6 @@ import { FC } from "react";
 import { useRecoilValue } from "recoil";
 import useCurrentStep from "../hooks/use-current-step";
 import { isPlayingState, trackState } from "../recoil/rhythm-state";
-import instruments from "../utils/instruments";
 
 interface Props {
     id: string;
