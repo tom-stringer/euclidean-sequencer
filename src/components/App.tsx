@@ -33,6 +33,21 @@ const App: FC = () => {
                         <h1 className="text-2xl text-muted">Loading...</h1>
                     </div>
                 )}
+                <div className="flex justify-center items-center">
+                    <p className="text-xs text-muted-dark">
+                        Thomas Stringer 2022. Made using{" "}
+                        <a className="hover:text-muted hover:underline" href="https://basicons.xyz">
+                            Basicons
+                        </a>{" "}
+                        and{" "}
+                        <a
+                            className="hover:text-muted hover:underline"
+                            href="https://blackoctopus-sound.com/free-downloads/">
+                            Black Octopus
+                        </a>
+                        .
+                    </p>
+                </div>
             </main>
             <ToastContainer />
             {isDebugging && <RecoilDebugger />}

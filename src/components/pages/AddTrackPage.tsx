@@ -12,7 +12,7 @@ const AddTrackPage: FC = () => {
     const navigate = useNavigate();
     const addTrack = useAddTrack();
 
-    function playInstrument(instrument: Instrument) {
+    function playInstrument(event: React.MouseEvent<HTMLDivElement>, instrument: Instrument) {
         const howl = new Howl({ src: instrument.url });
         howl.play();
     }
@@ -39,9 +39,9 @@ const AddTrackPage: FC = () => {
                         {group}
                     </h1>
                     {Object.values(instruments[group]).map((instrument) => (
-                        <button
-                            className="flex justify-between items-center rounded-lg bg-surface-1 hover:bg-surface-2 p-4"
-                            onClick={() => playInstrument(instrument)}
+                        <div
+                            className="flex justify-between items-center rounded-lg bg-surface-1 hover:bg-surface-2 p-4 cursor-pointer select-none"
+                            onClick={(event) => playInstrument(event, instrument)}
                             key={instrument.note}>
                             <div className="flex items-center">
                                 <PlayIcon className="w-5 h-5 fill-muted-light" />
@@ -53,7 +53,7 @@ const AddTrackPage: FC = () => {
                                 onClick={(event) => handleAddTrack(event, instrument)}>
                                 <PlusIcon className="w-full h-full stroke-muted-light group-hover:stroke-white" />
                             </button>
-                        </button>
+                        </div>
                     ))}
                 </>
             ))}
