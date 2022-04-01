@@ -36,11 +36,11 @@ const RhythmControls: FC = () => {
     return (
         <div className="flex justify-center my-2">
             <div className="flex justify-evenly items-center bg-surface-1 rounded-lg gap-x-4 py-3 px-4">
-                <button onClick={() => handleClickPlay()} className="group flex justify-center mx-2">
+                <button onClick={() => handleClickPlay()} className="group flex justify-center items-center p-2">
                     {!isPlaying ? (
-                        <PlayIcon className="fill-muted group-hover:fill-muted-light w-5 h-5" />
+                        <PlayIcon className="fill-muted group-hover:fill-muted-light w-6 h-6" />
                     ) : (
-                        <PauseIcon className="fill-muted group-hover:fill-muted-light w-5 h-5" />
+                        <PauseIcon className="fill-muted group-hover:fill-muted-light w-6 h-6" />
                     )}
                 </button>
 
