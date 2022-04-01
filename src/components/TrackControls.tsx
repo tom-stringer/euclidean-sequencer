@@ -124,7 +124,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                         max={env.STEPS_MAX}
                         onChange={(value) => handleChange(value, "steps")}
                         onIncrement={(change) => handleIncrement(change, "steps")}
-                        title="Steps"
+                        title="Length"
                         showValue
                         colour={mediumColour}
                     />
@@ -134,7 +134,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                         max={track.steps}
                         onChange={(value) => handleChange(value, "pulses")}
                         onIncrement={(change) => handleIncrement(change, "pulses")}
-                        title="Pulses"
+                        title="Notes"
                         showValue
                         colour={mediumColour}
                     />
@@ -144,7 +144,7 @@ const TrackControls: FC<TrackControlsProps> = ({ id }) => {
                         max={track.steps}
                         onChange={(value) => handleChange(value, "rotation")}
                         onIncrement={(change) => handleIncrement(change, "rotation")}
-                        title="Rotation"
+                        title="Offset"
                         showValue
                         colour={mediumColour}
                     />

@@ -14,7 +14,7 @@ const Header: FC = () => {
         <header className="h-6 flex justify-between items-center">
             <Link to="/" className="text-lg -mt-3">
                 Sequinse<span className="text-orange-medium text-2xl">.</span>
-                <span className="text-purple-medium text-2xl">.</span>
+                <span className="text-violet-medium text-2xl">.</span>
                 <span className="text-green-medium text-2xl">.</span>
             </Link>
 

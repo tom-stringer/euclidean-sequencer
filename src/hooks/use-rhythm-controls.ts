@@ -8,7 +8,7 @@ export default function useRhythmControls() {
     return {
         startRhythm: async () => {
             await context.resume();
-            Transport.start();
+            Transport.start("+0.1");
             setPlaying(true);
         },
         stopRhythm: () => {

@@ -51,15 +51,19 @@ module.exports = {
             "purple-dark": colors.purple[700],
             "purple-medium": colors.purple[400],
             "purple-light": colors.purple[300],
-            //Blue
+            // Violet.
+            "violet-dark": colors.violet[700],
+            "violet-medium": colors.violet[400],
+            "violet-light": colors.violet[300],
+            //Blue.
             "blue-dark": colors.sky[700],
             "blue-medium": colors.sky[400],
             "blue-light": colors.sky[300],
-            // Pink
+            // Pink.
             "pink-dark": colors.fuchsia[700],
             "pink-medium": colors.fuchsia[400],
             "pink-light": colors.fuchsia[300],
-            // Yellow
+            // Yellow.
             "yellow-dark": colors.yellow[600],
             "yellow-medium": colors.yellow[400],
             "yellow-light": colors.yellow[300],

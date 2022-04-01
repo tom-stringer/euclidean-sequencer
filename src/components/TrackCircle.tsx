@@ -21,7 +21,7 @@ const TrackCircle: FC<TrackCircleProps> = ({ id, index, sampler }) => {
         const seq = new Sequence(
             (time, note) => {
                 if (note) {
-                    sampler?.triggerAttack(instruments[track.instrument].note, time);
+                    sampler?.triggerAttack(instruments[track.instrument].note, time + 0.1);
                 }
             },
             track.necklace,
