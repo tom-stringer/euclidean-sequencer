@@ -18,11 +18,7 @@ const Header: FC = () => {
                 <h1 className="text-lg">Sequinse</h1>
             </div>
 
-            {isEditing && hasTracks && (
-                <div className="-mt-2">
-                    <ShareRhythmButton />
-                </div>
-            )}
+            {isEditing && hasTracks && <ShareRhythmButton />}
         </header>
     );
 };
