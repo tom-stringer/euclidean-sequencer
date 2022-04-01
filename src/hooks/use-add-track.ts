@@ -28,7 +28,7 @@ export default function useAddTrack() {
                 }
 
                 const id = v4();
-                set(trackState(id), createTrack(id, instrument.key, 8, 4, colour));
+                set(trackState(id), createTrack(id, instrument, 8, 4, colour));
                 set(trackControlsState(id), TrackControlStates.CLOSED);
                 set(trackIdsState, [...trackIds, id]);
             },

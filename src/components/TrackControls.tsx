@@ -1,11 +1,9 @@
 import { getPattern } from "euclidean-rhythms";
-import { FC, useEffect, useMemo } from "react";
+import { FC, useEffect } from "react";
 import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
-import { Player, Sequence } from "tone";
 import env from "../env";
 import { isPlayingState, trackIdsState, trackState } from "../recoil/rhythm-state";
 import { trackControlsState, TrackControlStates } from "../recoil/ui-state";
-import { instruments } from "../utils/instruments";
 import { rotateNecklace } from "../utils/rhythm-utils";
 import ChevronDownIcon from "./icons/ChevronDownIcon";
 import ChevronUpIcon from "./icons/ChevronUpIcon";

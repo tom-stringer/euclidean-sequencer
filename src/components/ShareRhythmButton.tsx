@@ -17,7 +17,8 @@ const ShareRhythmButton: FC = () => {
             try {
                 await navigator.share({ url });
             } catch (error) {
-                console.log("Share defined but error: ", error);
+                navigator.clipboard.writeText(url);
+                addToast(Toasts.CLIPBOARD);
             }
         } else {
             navigator.clipboard.writeText(url);

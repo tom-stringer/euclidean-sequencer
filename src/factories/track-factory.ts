@@ -1,16 +1,11 @@
 import { getPattern } from "euclidean-rhythms";
-import { Instruments } from "../types/rhythm-types";
+import { Note } from "tone/build/esm/core/type/NoteUnits";
+import { Instrument } from "../types/rhythm-types";
 import Track from "../types/track";
 import { Colours } from "../utils/colours";
 import { rotateNecklace } from "../utils/rhythm-utils";
 
-export function createTrack(
-    id: string,
-    instrument: Instruments,
-    steps: number,
-    pulses: number,
-    colour: Colours
-): Track {
+export function createTrack(id: string, instrument: Instrument, steps: number, pulses: number, colour: Colours): Track {
     const rotation = 0;
     return {
         id,

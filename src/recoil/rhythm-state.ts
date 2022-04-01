@@ -1,6 +1,5 @@
 import { atom, atomFamily } from "recoil";
 import { createTrack } from "../factories/track-factory";
-import { Instruments } from "../types/rhythm-types";
 import Track from "../types/track";
 import { Colours } from "../utils/colours";
 
@@ -11,7 +10,7 @@ export const trackIdsState = atom<string[]>({
 
 export const trackState = atomFamily<Track, string>({
     key: "track",
-    default: createTrack("default", Instruments.KICK, 8, 4, Colours.GREEN),
+    default: createTrack("default", { name: "Default", note: "C1", url: "default" }, 8, 4, Colours.GREEN),
 });
 
 export const isPlayingState = atom<boolean>({

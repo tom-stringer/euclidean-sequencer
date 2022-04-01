@@ -3,7 +3,7 @@ import { useResizeDetector } from "react-resize-detector";
 import { useRecoilValue } from "recoil";
 import { Sampler, Sequence } from "tone";
 import { trackState } from "../recoil/rhythm-state";
-import { instruments } from "../utils/instruments";
+import instruments from "../utils/instruments";
 import Step from "./Step";
 
 interface TrackCircleProps {
@@ -21,7 +21,7 @@ const TrackCircle: FC<TrackCircleProps> = ({ id, index, sampler }) => {
         const seq = new Sequence(
             (time, note) => {
                 if (note) {
-                    sampler?.triggerAttack(instruments[track.instrument].note, time + 0.1);
+                    sampler?.triggerAttack(track.instrument.note, time + 0.1);
                 }
             },
             track.necklace,

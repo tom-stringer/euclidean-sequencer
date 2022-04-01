@@ -30,7 +30,7 @@ const App: FC = () => {
                     </Routes>
                 ) : (
                     <div className="flex justify-center items-center grow">
-                        <h1 className="text-2xl text-muted">Loading</h1>
+                        <h1 className="text-2xl text-muted">Loading...</h1>
                     </div>
                 )}
             </main>

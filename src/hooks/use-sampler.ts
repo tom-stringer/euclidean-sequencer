@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Sampler } from "tone";
-import { instruments } from "../utils/instruments";
+import instruments from "../utils/instruments";
 
 /**
  * Create and return sampler. Only call once.
@@ -13,11 +13,13 @@ export default function useSampler(): [boolean, Sampler | null] {
     useEffect(() => {
         const sampleMap: Record<string, string> = {};
 
-        for (const instrument of Object.values(instruments)) {
-            sampleMap[instrument.note] = instrument.src;
+        for (const instrumentType of Object.values(instruments)) {
+            for (const instrument of Object.values(instrumentType)) {
+                sampleMap[instrument.note] = instrument.url;
+            }
         }
+
         sampler.current = new Sampler(sampleMap, () => {
-            console.log("loaded");
             setLoaded(true);
         }).toDestination();
     }, []);
